@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "498790074726",
+    "firebase_url": "https://games4you-d5233.firebaseio.com",
+    "project_id": "games4you-d5233",
+    "storage_bucket": "games4you-d5233.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498790074726:android:4aabfd4966ea9ac07760a7",
+        "android_client_info": {
+          "package_name": "com.example.games4you"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498790074726-jfd4uqrvmhua1qrj0gjnqgf2nfflqsnc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtZPp11rhUaIxDhnn4QwQtNfJ1MEe_S2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498790074726-jfd4uqrvmhua1qrj0gjnqgf2nfflqsnc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
