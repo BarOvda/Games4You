@@ -25,6 +25,14 @@ public class Login extends AppCompatActivity {
     ProgressBar progressBar;
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +45,7 @@ public class Login extends AppCompatActivity {
         btnSignIn = findViewById(R.id.signInButton);
         tvSignUp = findViewById(R.id.signUpTextView);
         progressBar = findViewById((R.id.progressBar3));
+
 
         btnSignIn.setOnClickListener(new View.OnClickListener(){
             @Override

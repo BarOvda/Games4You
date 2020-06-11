@@ -26,6 +26,13 @@ public class Register extends AppCompatActivity {
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +44,7 @@ public class Register extends AppCompatActivity {
         btnSignUp = findViewById(R.id.signUpButton);
 
         progressBar = findViewById((R.id.progressBar3));
+        progressBar.setVisibility(View.INVISIBLE);
 //        if(mFirebaseAuth.getCurrentUser()!=null){
 //            startActivity(new Intent(getApplicationContext(),MainActivity.class));
 //        }
