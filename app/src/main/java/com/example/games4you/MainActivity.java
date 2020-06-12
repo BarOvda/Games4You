@@ -7,9 +7,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 
@@ -20,34 +23,32 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar toolbar;
     DrawerLayout drawerLayout;
-    TextView mEmailText;
     FirebaseAuth mFirebaseAuth;
     FirebaseUser user;
     NavigationView mNavView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFirebaseAuth = FirebaseAuth.getInstance();
-         user = FirebaseAuth.getInstance().getCurrentUser();
-        setContentView(R.layout.nav_header);
-        mEmailText =  findViewById(R.id.navMenuEmailDisplay);
-
-
-        mEmailText.setText("user.getEmail()");
-
         setContentView(R.layout.activity_main);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
-        mNavView = findViewById(R.id.nav_view);
+        mNavView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = mNavView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.navMenuUserNameDisplay);
+        TextView navEmail = (TextView) headerView.findViewById(R.id.navMenuEmailDisplay);
+        navEmail.setText(user.getEmail());
 
         mNavView.setNavigationItemSelectedListener(this);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,
-                R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        if(savedInstanceState==null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
             mNavView.setCheckedItem(R.id.nav_home);
@@ -57,16 +58,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer((GravityCompat.START));
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_ps4:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PS4Fragment()).commit();
@@ -74,6 +75,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new HomeFragment()).commit();
+                break;
+            case R.id.nav_log_out:
+                mFirebaseAuth.signOut();
+                startActivity(new Intent(getApplicationContext(),Login.class));
                 break;
 
         }

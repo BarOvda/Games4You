@@ -46,7 +46,9 @@ public class Login extends AppCompatActivity {
         tvSignUp = findViewById(R.id.signUpTextView);
         progressBar = findViewById((R.id.progressBar3));
 
-
+        if(mFirebaseAuth.getCurrentUser()!=null){
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        }
         btnSignIn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

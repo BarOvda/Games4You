@@ -45,9 +45,9 @@ public class Register extends AppCompatActivity {
 
         progressBar = findViewById((R.id.progressBar3));
         progressBar.setVisibility(View.INVISIBLE);
-//        if(mFirebaseAuth.getCurrentUser()!=null){
-//            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-//        }
+        if(mFirebaseAuth.getCurrentUser()!=null){
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        }
         btnSignUp.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
