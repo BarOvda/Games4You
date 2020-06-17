@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseAuth mFirebaseAuth;
     FirebaseUser user;
     NavigationView mNavView;
+    PS4Fragment psFragment;
+    HomeFragment homeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         mFirebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+        psFragment = new PS4Fragment();
+        homeFragment = new HomeFragment();
 
         mNavView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = mNavView.getHeaderView(0);
@@ -50,9 +56,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
+                    homeFragment).commit();
             mNavView.setCheckedItem(R.id.nav_home);
         }
+
+
+        //PS4 fragment
+            
+
+
 
     }
 
@@ -70,11 +82,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_ps4:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new PS4Fragment()).commit();
+                        psFragment).commit();
                 break;
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HomeFragment()).commit();
+                        homeFragment).commit();
                 break;
             case R.id.nav_log_out:
                 mFirebaseAuth.signOut();
