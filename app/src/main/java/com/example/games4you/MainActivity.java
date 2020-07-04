@@ -12,8 +12,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 
@@ -62,8 +65,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //PS4 fragment
-            
-
 
 
     }
@@ -95,6 +96,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.search_menu,menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                psFragment.searchFilter(newText);
+                return false;
+            }
+        });
         return true;
     }
 }
