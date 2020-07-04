@@ -1,6 +1,7 @@
 package com.example.games4you;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,13 +28,14 @@ import java.util.List;
 public class PS4Fragment extends Fragment {
     private RecyclerView mRecycleView;
     private GameAdapter mGameAdapter;
+
     private DatabaseReference mDatabaseReference;
     private List<Game> mGames;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("games_images");
+
 
     }
 
@@ -46,13 +48,20 @@ public class PS4Fragment extends Fragment {
         mRecycleView.setHasFixedSize(true);
         mRecycleView.setLayoutManager((new LinearLayoutManager(this.getContext())));//cheak
         mGames = new ArrayList<>();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("games_images");
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               Game g = dataSnapshot.getValue(Game.class);
+
                 for(DataSnapshot postSnapshot:dataSnapshot.getChildren()){
                     Game game = postSnapshot.getValue(Game.class);
                     mGames.add(game);
                 }
+                mGames.add(new Game("God Of War","https://www.dominator.co.il/images/itempics/1129_large.jpg"));
+                mGames.add(new Game("God Of War","https://www.dominator.co.il/images/itempics/1129_large.jpg"));
+                mGames.add(new Game("God Of War","https://www.dominator.co.il/images/itempics/1129_large.jpg"));
+                mGames.add(new Game("God Of War","https://www.dominator.co.il/images/itempics/1129_large.jpg"));
                 mGameAdapter = new GameAdapter(PS4Fragment.this.getContext(),mGames);
                 mRecycleView.setAdapter(mGameAdapter);
             }
@@ -62,7 +71,6 @@ public class PS4Fragment extends Fragment {
                 Toast.makeText(PS4Fragment.this.getContext(),databaseError.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
-
 
         return  view;
 
