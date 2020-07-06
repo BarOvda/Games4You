@@ -18,20 +18,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.games4you.logic.Game;
 import com.example.games4you.logic.GameAdapter;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PS4Fragment extends Fragment {
     private RecyclerView mRecycleView;
     private GameAdapter mGameAdapter;
+    private StorageReference  mStorageRef ;
 
-    private DatabaseReference mDatabaseReference;
+    FirebaseFirestore db;
+ //   private DatabaseReference mDatabaseReference;
     private List<Game> mGames;
 
     @Override
@@ -45,34 +55,42 @@ public class PS4Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
         View view = inflater.inflate(R.layout.fragment_ps4,container,false);
         mRecycleView = view.findViewById(R.id.recycler_view);
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("games_images");
+
         mRecycleView.setHasFixedSize(true);
         mRecycleView.setLayoutManager((new LinearLayoutManager(this.getContext())));//cheak
         mGames = new ArrayList<>();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("games_images");
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               Game g = dataSnapshot.getValue(Game.class);
+        db= FirebaseFirestore.getInstance();
+        //mDatabaseReference = FirebaseDatabase.getInstance().getReference("games_images");
 
-                for(DataSnapshot postSnapshot:dataSnapshot.getChildren()){
-                    Game game = postSnapshot.getValue(Game.class);
-                    mGames.add(game);
-                }
-                mGames.add(new Game("God Of War","https://www.dominator.co.il/images/itempics/1129_large.jpg"));
-                mGames.add(new Game("God Of War","https://www.dominator.co.il/images/itempics/1129_large.jpg"));
-                mGames.add(new Game("God Of War","https://www.dominator.co.il/images/itempics/1129_large.jpg"));
-                mGames.add(new Game("God Of War","https://www.dominator.co.il/images/itempics/1129_large.jpg"));
-                mGameAdapter = new GameAdapter(PS4Fragment.this.getContext(),mGames);
-                mRecycleView.setAdapter(mGameAdapter);
-            }
+        db.collection("games_images")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(PS4Fragment.this.getContext(),databaseError.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
+                                Game game = document.toObject(Game.class);
+
+
+
+
+                                mGames.add(game);
+
+                                Log.d("Data tag", document.getId() + " => " + document.getData());
+                            }
+                            mGameAdapter = new GameAdapter(PS4Fragment.this.getContext(),mGames);
+                            mRecycleView.setAdapter(mGameAdapter);
+                        } else {
+                            Log.d("TAG Error", "task.getException()");
+                        }
+                    }
+                });
 
         return  view;
 
@@ -83,3 +101,5 @@ public class PS4Fragment extends Fragment {
         mGameAdapter.getFilter().filter(txt);
     }
 }
+
+
