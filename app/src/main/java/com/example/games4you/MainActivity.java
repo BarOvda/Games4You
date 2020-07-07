@@ -16,13 +16,23 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 
+import com.example.games4you.logic.Game;
+import com.example.games4you.logic.GameAdapter;
+import com.example.games4you.logic.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar toolbar;
@@ -33,10 +43,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     PS4Fragment psFragment;
     XboxOneFragment xboxOneFragment;
     HomeFragment homeFragment;
+    ImageView userImageView;
+    TextView userNameFiled;
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
         mFirebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -49,6 +65,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View headerView = mNavView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.navMenuUserNameDisplay);
         TextView navEmail = (TextView) headerView.findViewById(R.id.navMenuEmailDisplay);
+
+        userImageView = (ImageView)headerView.findViewById(R.id.user_image_view);
+        userNameFiled = (TextView)headerView.findViewById(R.id.navMenuUserNameDisplay);
+
+        String usersEmail;
+        if (currentUser != null)
+             usersEmail = user.getEmail();
+        else
+            usersEmail ="";
+
+        db.collection("users").whereEqualTo("email",usersEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                               User userToDisplay =document.toObject(User.class);
+                                userNameFiled.setText( userToDisplay.getUserName());
+                                Picasso.get().load(userToDisplay.getImageUrl())
+                                        .fit()
+                                        .centerCrop()
+                                        .into(userImageView);
+                            }
+
+                        } else {
+                            Log.d("TAG Error", "task.getException()");
+                        }
+                    }
+                });
+
+
+
+
         navEmail.setText(user.getEmail());
 
         mNavView.setNavigationItemSelectedListener(this);

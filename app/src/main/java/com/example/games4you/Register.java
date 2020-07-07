@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,17 +14,22 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.games4you.logic.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Register extends AppCompatActivity {
-    EditText mEmailId, mPassword;
+    EditText mEmailId, mPassword,muserName;
     Button btnSignUp;
 
     ProgressBar progressBar;
     FirebaseAuth mFirebaseAuth;
+    private FirebaseFirestore db ;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
 
@@ -39,8 +45,12 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         mEmailId = findViewById(R.id.emailText);
         mPassword = findViewById(R.id.passwordText);
+        muserName = findViewById(R.id.user_name_text);
+
         btnSignUp = findViewById(R.id.signUpButton);
 
         progressBar = findViewById((R.id.progressBar3));
@@ -51,8 +61,9 @@ public class Register extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String email = mEmailId.getText().toString().trim();
+                final String email = mEmailId.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
+                final String userName = muserName.getText().toString().trim();
                 if(TextUtils.isEmpty(email)){
                     mEmailId.setError("Email is Required");
                     return;
@@ -64,12 +75,22 @@ public class Register extends AppCompatActivity {
                     return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
-
+                 final User user = new User(email,userName,"");
                 mFirebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
+
+                            db.collection("users")
+                                    .add(user)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            Log.d("tagsucces", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                        }
+                                    });
+
                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
 
                         }else{

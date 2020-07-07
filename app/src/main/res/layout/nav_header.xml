@@ -11,6 +11,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/user_image_view"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
