@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_ps4:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        psFragment).commit();
+                        psFragment,"PS4_FRAGMENT").commit();
                 break;
             case R.id.nav_xboxOne:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        xboxOneFragment).commit();
+                        xboxOneFragment,"XBOX_ONE_FRAGMENT").commit();
                 break;
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -120,7 +120,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                psFragment.searchFilter(newText);
+
+
+                if(psFragment!=null&&psFragment.isVisible())
+                    psFragment.searchFilter(newText);
+                else if(xboxOneFragment!=null&&xboxOneFragment.isVisible())
+                    xboxOneFragment.searchFilter(newText);
+
                 return false;
             }
         });
