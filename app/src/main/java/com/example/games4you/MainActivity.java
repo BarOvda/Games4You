@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     PS4Fragment psFragment;
     XboxOneFragment xboxOneFragment;
     HomeFragment homeFragment;
+    SettingsFragment settingsFragment;
     ImageView userImageView;
     TextView userNameFiled;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         psFragment = new PS4Fragment();
         xboxOneFragment = new XboxOneFragment();
         homeFragment = new HomeFragment();
+        settingsFragment = new SettingsFragment();
 
         mNavView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = mNavView.getHeaderView(0);
@@ -84,10 +86,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                User userToDisplay =document.toObject(User.class);
                                 userNameFiled.setText( userToDisplay.getUserName());
-                                Picasso.get().load(userToDisplay.getImageUrl())
+                                String imageUrl = userToDisplay.getImageUrl();
+                                if(imageUrl ==""){
+                                    Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/games4you-d5233.appspot.com/o/users_images%2Fperson_icon.png?alt=media&token=76f2c5f4-6302-4777-83da-b51373f45906")
+                                            .fit()
+                                            .centerCrop()
+                                            .into(userImageView);}
+                               else{
+                                   Picasso.get().load(imageUrl)
                                         .fit()
                                         .centerCrop()
-                                        .into(userImageView);
+                                        .into(userImageView);}
                             }
 
                         } else {
@@ -95,9 +104,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }
                 });
-
-
-
 
         navEmail.setText(user.getEmail());
 
@@ -144,6 +150,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         homeFragment).commit();
+                break;
+            case R.id.nav_settings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        settingsFragment).commit();
                 break;
             case R.id.nav_log_out:
                 mFirebaseAuth.signOut();

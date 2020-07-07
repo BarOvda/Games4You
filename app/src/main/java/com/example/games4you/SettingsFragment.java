@@ -1,64 +1,110 @@
 package com.example.games4you;
 
+
+import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
+
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.games4you.logic.Game;
+import com.example.games4you.logic.GameAdapter;
+import com.example.games4you.logic.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+
+import com.google.android.gms.tasks.Task;
+
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class SettingsFragment extends Fragment {
+    NavigationView mNavView;
+    ImageView userImageView;
+    TextView userNameFiled;
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SettingsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SettingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SettingsFragment newInstance(String param1, String param2) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_settings,container,false);
+
+        mNavView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        View headerView = mNavView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.navMenuUserNameDisplay);
+        TextView navEmail = (TextView) headerView.findViewById(R.id.navMenuEmailDisplay);
+
+        userImageView = (ImageView)view.findViewById(R.id.user_photo);
+        userNameFiled = (TextView)view.findViewById(R.id.user_name_text);
+        String usersEmail;
+        if (currentUser != null)
+            usersEmail = currentUser.getEmail();
+        else
+            usersEmail ="";
+
+        db.collection("users").whereEqualTo("email",usersEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                User userToDisplay =document.toObject(User.class);
+                                userNameFiled.setText(userToDisplay.getUserName());
+                                String imageUrl = userToDisplay.getImageUrl();
+                                if(imageUrl ==""){
+                                    Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/games4you-d5233.appspot.com/o/users_images%2Fperson_icon.png?alt=media&token=76f2c5f4-6302-4777-83da-b51373f45906")
+                                            .fit()
+                                            .centerCrop()
+                                            .into(userImageView);}
+                                else{
+                                    Picasso.get().load(imageUrl)
+                                            .fit()
+                                            .centerCrop()
+                                            .into(userImageView);}
+                            }
+
+                        } else {
+                            Log.d("TAG Error", "task.getException()");
+                        }
+                    }
+                });
+
+        return  view;
+
     }
+
+
 }
+
+
