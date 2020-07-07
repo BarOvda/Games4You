@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseUser user;
     NavigationView mNavView;
     PS4Fragment psFragment;
+    XboxOneFragment xboxOneFragment;
     HomeFragment homeFragment;
 
     @Override
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         psFragment = new PS4Fragment();
+        xboxOneFragment = new XboxOneFragment();
         homeFragment = new HomeFragment();
 
         mNavView = (NavigationView) findViewById(R.id.nav_view);
@@ -84,6 +86,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_ps4:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         psFragment).commit();
+                break;
+            case R.id.nav_xboxOne:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        xboxOneFragment).commit();
                 break;
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
