@@ -83,13 +83,9 @@ public class Register extends AppCompatActivity {
                             Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
 
                             db.collection("users")
-                                    .add(user)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                        @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-                                            Log.d("tagsucces", "DocumentSnapshot added with ID: " + documentReference.getId());
-                                        }
-                                    });
+                                    .document(user.getEmail())
+                                    .set(user)
+                                   ;
 
                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
 

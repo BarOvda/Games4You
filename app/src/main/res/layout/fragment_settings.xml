@@ -15,7 +15,8 @@
         android:layout_width="155dp"
         android:layout_height="148dp"
         android:layout_gravity="center_horizontal"
-
+        android:clickable="true"
+        android:focusable="true"
         android:src="@drawable/games4u_icon" />
 
     <LinearLayout
