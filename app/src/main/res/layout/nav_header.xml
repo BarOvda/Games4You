@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:background="@color/colorAccent">
+    android:background="@drawable/gradient">
 
     <de.hdodenhof.circleimageview.CircleImageView
 
