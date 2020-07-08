@@ -2,12 +2,13 @@ package com.example.games4you;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,8 +22,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 
-import com.example.games4you.logic.Game;
-import com.example.games4you.logic.GameAdapter;
 import com.example.games4you.logic.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,8 +33,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    Toolbar toolbar;
+    Toolbar mainToolBar;
+    Toolbar searchToolBar;
     DrawerLayout drawerLayout;
     FirebaseAuth mFirebaseAuth;
     FirebaseUser user;
@@ -46,6 +49,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SettingsFragment settingsFragment;
     ImageView userImageView;
     TextView userNameFiled;
+    ImageView searchView;
+    ImageView filterView;
+    boolean[] checkedCategories;
+    String[] listCategories;
+    List<Integer> mUserCategoriesSelection;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -53,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mUserCategoriesSelection = new ArrayList<>();
+        listCategories = new String[1];
+        listCategories[0] = "horror";
+        checkedCategories = new boolean[listCategories.length];
 
         setContentView(R.layout.activity_main);
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -108,10 +120,69 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navEmail.setText(user.getEmail());
 
         mNavView.setNavigationItemSelectedListener(this);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mainToolBar = findViewById(R.id.main_toolbar);
+        searchToolBar = findViewById(R.id.search_toolbar);
+        searchView = findViewById(R.id.search_button_toolbar);
+        filterView = findViewById(R.id.search_button_filter);
+
+        searchView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("search","pressed");
+
+
+
+            }
+        });
+
+        filterView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("filter","pressed");
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+                mBuilder.setTitle("Games Filter");
+                mBuilder.setMultiChoiceItems(listCategories, checkedCategories, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position, boolean isChecked) {
+                        if(isChecked){
+                            if(!mUserCategoriesSelection.contains(position)){
+                                mUserCategoriesSelection.add(position);
+                            }else{
+                                mUserCategoriesSelection.remove(position);
+                            }
+                        }
+                    }
+                });
+                mBuilder.setCancelable(false);
+                mBuilder.setPositiveButton("Filter", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String item = "";
+
+                    }
+                });
+                mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                mBuilder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(int i=0;i<checkedCategories.length;i++)
+                            checkedCategories[i]=false;
+                        mUserCategoriesSelection.clear();
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
+
+        setSupportActionBar(mainToolBar);
         drawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, mainToolBar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();

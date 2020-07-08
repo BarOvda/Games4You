@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Game {
+
     private String mName;
     private String mImageUrl;
-
+    private List<Categories> mCategories;
     public Game(){
 
     }
@@ -15,7 +16,7 @@ public class Game {
     public Game(String mName, String mImageUrl) {
         this.mName = mName;
         this.mImageUrl = mImageUrl;
-
+        this.mCategories = new ArrayList<>();
     }
 
     public String getName() {
@@ -32,5 +33,18 @@ public class Game {
 
     public void setImageUrl(String mImageUrl) {
         this.mImageUrl = mImageUrl;
+    }
+    public List<Categories> getmCategories() {
+        return mCategories;
+    }
+
+    public void setmCategories(List<Categories> mCategories) {
+        this.mCategories = mCategories;
+    }
+    public void addCategory(Categories Category){
+        this.mCategories.add(Category);
+    }
+    public void addCategories(List<Categories> Categories){
+        this.mCategories.addAll(Categories);
     }
 }
