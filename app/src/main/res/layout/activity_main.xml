@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-
+        layout_scrollFlag="scroll|enterAlways|snap"
         android:theme="?attr/actionBarTheme">
 
         <LinearLayout
@@ -43,15 +43,26 @@
 
             <ImageView
                 android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="25dp"
             android:layout_weight="20"
+                android:layout_gravity="center_vertical"
             android:id="@+id/search_button_toolbar"
+
             android:src="@drawable/ic_search" />
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="20"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:id="@+id/search_bar_main_logo"
+                android:src="@drawable/games4u_logo" />
+
+            <ImageView
                 android:id="@+id/search_button_filter"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="20"
+                android:layout_gravity="center_vertical"
+
                 android:src="@drawable/ic_search_filter" />
 
         </LinearLayout>

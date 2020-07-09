@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNavView.setNavigationItemSelectedListener(this);
         mainToolBar = findViewById(R.id.main_toolbar);
         searchToolBar = findViewById(R.id.search_toolbar);
+        searchToolBar.setVisibility(View.GONE);
         searchView = findViewById(R.id.search_button_toolbar);
         filterView = findViewById(R.id.search_button_filter);
 
@@ -131,9 +132,102 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.d("search","pressed");
 
 
-
             }
         });
+        gilterByCatecories();
+        setSupportActionBar(mainToolBar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, mainToolBar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    homeFragment).commit();
+            mNavView.setCheckedItem(R.id.nav_home);
+        }
+
+
+        //PS4 fragment
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer((GravityCompat.START));
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_ps4:
+                searchToolBar.setVisibility(View.VISIBLE);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        psFragment,"PS4_FRAGMENT").commit();
+                break;
+            case R.id.nav_xboxOne:
+                searchToolBar.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        xboxOneFragment,"XBOX_ONE_FRAGMENT").commit();
+                break;
+            case R.id.nav_home:
+                searchToolBar.setVisibility(View.GONE);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        homeFragment).commit();
+                break;
+            case R.id.nav_settings:
+                searchToolBar.setVisibility(View.GONE);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        settingsFragment).commit();
+                break;
+            case R.id.nav_log_out:
+                searchToolBar.setVisibility(View.GONE);
+
+                mFirebaseAuth.signOut();
+                startActivity(new Intent(getApplicationContext(),Login.class));
+                break;
+
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.search_menu,menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+
+                if(psFragment!=null&&psFragment.isVisible())
+                    psFragment.searchFilter(newText);
+                else if(xboxOneFragment!=null&&xboxOneFragment.isVisible())
+                    xboxOneFragment.searchFilter(newText);
+
+                return false;
+            }
+        });
+        return true;
+    }
+    public void gilterByCatecories(){
 
         filterView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,87 +274,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        setSupportActionBar(mainToolBar);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, mainToolBar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    homeFragment).commit();
-            mNavView.setCheckedItem(R.id.nav_home);
-        }
-
-
-        //PS4 fragment
-
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer((GravityCompat.START));
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_ps4:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        psFragment,"PS4_FRAGMENT").commit();
-                break;
-            case R.id.nav_xboxOne:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        xboxOneFragment,"XBOX_ONE_FRAGMENT").commit();
-                break;
-            case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        homeFragment).commit();
-                break;
-            case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        settingsFragment).commit();
-                break;
-            case R.id.nav_log_out:
-                mFirebaseAuth.signOut();
-                startActivity(new Intent(getApplicationContext(),Login.class));
-                break;
-
-        }
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.search_menu,menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView)searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-
-                if(psFragment!=null&&psFragment.isVisible())
-                    psFragment.searchFilter(newText);
-                else if(xboxOneFragment!=null&&xboxOneFragment.isVisible())
-                    xboxOneFragment.searchFilter(newText);
-
-                return false;
-            }
-        });
-        return true;
     }
 }
