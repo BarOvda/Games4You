@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.games4you.logic.Categories;
 import com.example.games4you.logic.Game;
 import com.example.games4you.logic.GameAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -64,10 +65,14 @@ public class PS4Fragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            int i=0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
+                                if(i==0)
+                                    game.addCategory(Categories.HORROR);
                                 mGames.add(game);
+                                i++;
 
                             }
                             mGameAdapter = new GameAdapter(PS4Fragment.this.getContext(),mGames);
@@ -86,6 +91,10 @@ public class PS4Fragment extends Fragment {
 
     public void searchFilter(String txt) {
         mGameAdapter.getFilter().filter(txt);
+    }
+
+    public void filterGamesByCategory(List<String> categories){
+       mGameAdapter.filterByCategories(categories);
     }
 }
 

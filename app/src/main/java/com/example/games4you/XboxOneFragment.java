@@ -70,10 +70,6 @@ public class XboxOneFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
-
-
-
-
                                 mGames.add(game);
 
                                 Log.d("Data tag", document.getId() + " => " + document.getData());
@@ -93,6 +89,11 @@ public class XboxOneFragment extends Fragment {
 
     public void searchFilter(String txt) {
         mGameAdapter.getFilter().filter(txt);
+    }
+
+    public void filterGamesByCategory(List<String> mUserCategoriesSelection) {
+        mGameAdapter.filterByCategories(mUserCategoriesSelection);
+
     }
 }
 

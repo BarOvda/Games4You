@@ -22,6 +22,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 
+import com.example.games4you.logic.Categories;
 import com.example.games4you.logic.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,7 +54,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageView filterView;
     boolean[] checkedCategories;
     String[] listCategories;
-    List<Integer> mUserCategoriesSelection;
+    List<String> mUserCategoriesSelection;
+    boolean fragmentChanged;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -62,8 +64,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
 
         mUserCategoriesSelection = new ArrayList<>();
-        listCategories = new String[1];
-        listCategories[0] = "horror";
+        listCategories = new String[Categories.values().length];
+        getAllCategories();
+
         checkedCategories = new boolean[listCategories.length];
 
         setContentView(R.layout.activity_main);
@@ -153,6 +156,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private void getAllCategories() {
+        int i=0;
+        for (Categories category : Categories.values()) {
+            listCategories[i] = category.toString();
+            i++;
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -167,24 +178,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_ps4:
                 searchToolBar.setVisibility(View.VISIBLE);
-
+                resetFilterChoices();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         psFragment,"PS4_FRAGMENT").commit();
                 break;
             case R.id.nav_xboxOne:
                 searchToolBar.setVisibility(View.VISIBLE);
+                resetFilterChoices();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         xboxOneFragment,"XBOX_ONE_FRAGMENT").commit();
                 break;
             case R.id.nav_home:
                 searchToolBar.setVisibility(View.GONE);
-
+                resetFilterChoices();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         homeFragment).commit();
                 break;
             case R.id.nav_settings:
                 searchToolBar.setVisibility(View.GONE);
-
+                resetFilterChoices();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         settingsFragment).commit();
                 break;
@@ -238,20 +250,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mBuilder.setMultiChoiceItems(listCategories, checkedCategories, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int position, boolean isChecked) {
-                        if(isChecked){
-                            if(!mUserCategoriesSelection.contains(position)){
-                                mUserCategoriesSelection.add(position);
+                   //     if(isChecked){
+                            if(!mUserCategoriesSelection.contains(listCategories[position])){
+                                mUserCategoriesSelection.add(listCategories[position]);
                             }else{
-                                mUserCategoriesSelection.remove(position);
+                                mUserCategoriesSelection.remove(listCategories[position]);
                             }
                         }
-                    }
+                    //}
                 });
                 mBuilder.setCancelable(false);
                 mBuilder.setPositiveButton("Filter", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String item = "";
+                        if(psFragment!=null&&psFragment.isVisible())
+                            psFragment.filterGamesByCategory(mUserCategoriesSelection);
+                        else if(xboxOneFragment!=null&&xboxOneFragment.isVisible())
+                            xboxOneFragment.filterGamesByCategory(mUserCategoriesSelection);
 
                     }
                 });
@@ -267,6 +282,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         for(int i=0;i<checkedCategories.length;i++)
                             checkedCategories[i]=false;
                         mUserCategoriesSelection.clear();
+                        if(psFragment!=null&&psFragment.isVisible())
+                            psFragment.filterGamesByCategory(mUserCategoriesSelection);
+                        else if(xboxOneFragment!=null&&xboxOneFragment.isVisible())
+                            xboxOneFragment.filterGamesByCategory(mUserCategoriesSelection);
+
                     }
                 });
                 AlertDialog mDialog = mBuilder.create();
@@ -275,4 +295,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
     }
+    public void resetFilterChoices(){
+        for(int i=0;i<checkedCategories.length;i++)
+            checkedCategories[i]=false;
+        mUserCategoriesSelection.clear();
+    }
+
 }

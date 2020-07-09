@@ -10,7 +10,7 @@ public class Game {
     private String mImageUrl;
     private List<Categories> mCategories;
     public Game(){
-
+        this.mCategories = new ArrayList<>();
     }
 
     public Game(String mName, String mImageUrl) {
