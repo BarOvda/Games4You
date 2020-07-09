@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,8 @@ import java.util.List;
 public class XboxOneFragment extends Fragment {
     private RecyclerView mRecycleView;
     private GameAdapter mGameAdapter;
+    private ProgressBar progressBar;
+
     private final static int NUMBER_OF_GAMES_IN_A_ROW = 2;
 
     FirebaseFirestore db;
@@ -55,6 +58,7 @@ public class XboxOneFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_xbox_one,container,false);
         mRecycleView = view.findViewById(R.id.recycler_view);
+        progressBar =  view.findViewById(R.id.progressBar);
 
         mRecycleView.setHasFixedSize(true);
         mRecycleView.setLayoutManager((new LinearLayoutManager(this.getContext())));//cheak
@@ -68,6 +72,8 @@ public class XboxOneFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            progressBar.setVisibility(View.GONE);
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
@@ -80,7 +86,7 @@ public class XboxOneFragment extends Fragment {
 
                             mRecycleView.setAdapter(mGameAdapter);
                         } else {
-                            Log.d("TAG Error", "task.getException()");
+                            progressBar.setVisibility(View.VISIBLE);
                         }
                     }
                 });

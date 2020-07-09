@@ -8,25 +8,25 @@ tools:context=".Login"
     android:background="@drawable/main_style">
 
 
-<EditText
-    android:id="@+id/logInEmailText"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="313dp"
-    android:layout_marginEnd="85dp"
-    android:layout_marginRight="85dp"
-    android:layout_marginStart="84dp"
-    android:layout_marginLeft="84dp"
-    android:layout_marginTop="152dp"
-    android:ems="10"
-    android:hint="@string/email"
-    android:inputType="textEmailAddress"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <EditText
+        android:id="@+id/logInEmailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginTop="152dp"
+        android:layout_marginEnd="85dp"
+        android:layout_marginRight="85dp"
+        android:layout_marginBottom="313dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-<EditText
+    <EditText
     android:id="@+id/logInPasswordText"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
