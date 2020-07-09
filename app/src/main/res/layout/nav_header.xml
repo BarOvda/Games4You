@@ -6,11 +6,13 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:background="@color/colorAccent">
+    android:background="@drawable/gradient">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <de.hdodenhof.circleimageview.CircleImageView
+
+    android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/user_image_view"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
