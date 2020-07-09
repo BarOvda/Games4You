@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +35,7 @@ import java.util.List;
 public class XboxOneFragment extends Fragment {
     private RecyclerView mRecycleView;
     private GameAdapter mGameAdapter;
-
+    private final static int NUMBER_OF_GAMES_IN_A_ROW = 2;
 
     FirebaseFirestore db;
     //   private DatabaseReference mDatabaseReference;
@@ -75,6 +76,8 @@ public class XboxOneFragment extends Fragment {
                                 Log.d("Data tag", document.getId() + " => " + document.getData());
                             }
                             mGameAdapter = new GameAdapter(XboxOneFragment.this.getContext(),mGames);
+                            mRecycleView.setLayoutManager(new GridLayoutManager(getContext(), NUMBER_OF_GAMES_IN_A_ROW));
+
                             mRecycleView.setAdapter(mGameAdapter);
                         } else {
                             Log.d("TAG Error", "task.getException()");

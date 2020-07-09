@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 userNameFiled.setText( userToDisplay.getUserName());
                                 String imageUrl = userToDisplay.getImageUrl();
                                 if(imageUrl ==""){
-                                    Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/games4you-d5233.appspot.com/o/users_images%2Fperson_icon.png?alt=media&token=76f2c5f4-6302-4777-83da-b51373f45906")
+                                    Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/games4you-d5233.appspot.com/o/users_images%2Fdeafult_icon.png?alt=media&token=3bc92123-7268-447e-9305-d1421ea9dc58")
                                             .fit()
                                             .centerCrop()
                                             .into(userImageView);}
