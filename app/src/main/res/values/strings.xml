@@ -6,4 +6,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="play_btn">Play Video</string>
     <string name="play_trial_btn">Play Trial</string>
+    <string name="play_gameplay_btn">Play Gameplay</string>
+    <string name="review_game_header">Reviews</string>
+    <string name="game_image">Game Image</string>
 </resources>
