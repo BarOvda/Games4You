@@ -1,5 +1,6 @@
 package com.example.games4you;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,19 +11,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.games4you.logic.Game;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-public class GamePageFragment extends Fragment {
+public class GamePageFragment extends YouTubePlayerFragment {
 
     public static final String YOUTUBE_CRED = "AIzaSyBsgtxTZEPQvf1_M34bJCmwlL1ROcJGu7c";
 
-    private YouTubeBaseActivity youTubeBaseActivity;
     private YouTubePlayerView youTubePlayerViewTrial;
     private YouTubePlayerView youTubePlayerViewGamePlay;
     private YouTubePlayer.OnInitializedListener onInitializedListenerTrial;
@@ -31,14 +35,14 @@ public class GamePageFragment extends Fragment {
     private Button btnPlayGamePlay;
     private Game mGame;
     private TextView description;
+    private View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ps4, container, false);
-        youTubeBaseActivity = new YouTubeBaseActivity();
-        youTubePlayerViewTrial = youTubeBaseActivity.findViewById(R.id.trial_youtube);
-        youTubePlayerViewGamePlay = youTubeBaseActivity.findViewById(R.id.gameplay_youtube);
+        view = inflater.inflate(R.layout.fragment_ps4, container, false);
+        youTubePlayerViewTrial = view.findViewById(R.id.trial_youtube);
+        youTubePlayerViewGamePlay = view.findViewById(R.id.gameplay_youtube);
         btnPlayTrial = view.findViewById(R.id.play_trial_btn);
         btnPlayGamePlay = view.findViewById(R.id.play_gameplay_btn);
         description = view.findViewById(R.id.game_description);
@@ -49,7 +53,7 @@ public class GamePageFragment extends Fragment {
         assert mGame != null;
         description.setText(mGame.getmDescription());
 
-        //===================================================================
+        //====================================================================
 
         onInitializedListenerTrial = new YouTubePlayer.OnInitializedListener() {
             @Override
@@ -59,7 +63,7 @@ public class GamePageFragment extends Fragment {
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                Toast.makeText(getContext(), "Video Failed To Load", Toast.LENGTH_LONG);
+                Toast.makeText(view.getContext(), "Video Failed To Load", Toast.LENGTH_LONG);
             }
         };
 
@@ -71,7 +75,7 @@ public class GamePageFragment extends Fragment {
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                Toast.makeText(getContext(), "Video Failed To Load", Toast.LENGTH_LONG);
+                Toast.makeText(view.getContext(), "Video Failed To Load", Toast.LENGTH_LONG);
             }
         };
 
