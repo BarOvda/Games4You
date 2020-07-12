@@ -39,7 +39,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Toolbar mainToolBar;
-    Toolbar searchToolBar;
     DrawerLayout drawerLayout;
     FirebaseAuth mFirebaseAuth;
     FirebaseUser user;
@@ -52,9 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView userNameFiled;
     ImageView searchView;
     ImageView filterView;
-    boolean[] checkedCategories;
-    String[] listCategories;
-    List<String> mUserCategoriesSelection;
+
     boolean fragmentChanged;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -63,11 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mUserCategoriesSelection = new ArrayList<>();
-        listCategories = new String[Categories.values().length];
-        getAllCategories();
 
-        checkedCategories = new boolean[listCategories.length];
 
         setContentView(R.layout.activity_main);
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -124,20 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mNavView.setNavigationItemSelectedListener(this);
         mainToolBar = findViewById(R.id.main_toolbar);
-        searchToolBar = findViewById(R.id.search_toolbar);
-        searchToolBar.setVisibility(View.GONE);
-        searchView = findViewById(R.id.search_button_toolbar);
-        filterView = findViewById(R.id.search_button_filter);
 
-        searchView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Log.d("search","pressed");
-
-
-            }
-        });
-        gilterByCatecories();
         setSupportActionBar(mainToolBar);
         drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, mainToolBar,
@@ -156,13 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void getAllCategories() {
-        int i=0;
-        for (Categories category : Categories.values()) {
-            listCategories[i] = category.toString();
-            i++;
-        }
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -177,31 +151,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_ps4:
-                searchToolBar.setVisibility(View.VISIBLE);
-                resetFilterChoices();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         psFragment,"PS4_FRAGMENT").commit();
                 break;
             case R.id.nav_xboxOne:
-                searchToolBar.setVisibility(View.VISIBLE);
-                resetFilterChoices();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         xboxOneFragment,"XBOX_ONE_FRAGMENT").commit();
                 break;
             case R.id.nav_home:
-                searchToolBar.setVisibility(View.GONE);
-                resetFilterChoices();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         homeFragment).commit();
                 break;
             case R.id.nav_settings:
-                searchToolBar.setVisibility(View.GONE);
-                resetFilterChoices();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         settingsFragment).commit();
                 break;
             case R.id.nav_log_out:
-                searchToolBar.setVisibility(View.GONE);
 
                 mFirebaseAuth.signOut();
                 startActivity(new Intent(getApplicationContext(),Login.class));
@@ -239,66 +204,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         return true;
     }
-    public void gilterByCatecories(){
 
-        filterView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("filter","pressed");
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
-                mBuilder.setTitle("Games Filter");
-                mBuilder.setMultiChoiceItems(listCategories, checkedCategories, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int position, boolean isChecked) {
-                   //     if(isChecked){
-                            if(!mUserCategoriesSelection.contains(listCategories[position])){
-                                mUserCategoriesSelection.add(listCategories[position]);
-                            }else{
-                                mUserCategoriesSelection.remove(listCategories[position]);
-                            }
-                        }
-                    //}
-                });
-                mBuilder.setCancelable(false);
-                mBuilder.setPositiveButton("Filter", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(psFragment!=null&&psFragment.isVisible())
-                            psFragment.filterGamesByCategory(mUserCategoriesSelection);
-                        else if(xboxOneFragment!=null&&xboxOneFragment.isVisible())
-                            xboxOneFragment.filterGamesByCategory(mUserCategoriesSelection);
 
-                    }
-                });
-                mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                mBuilder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        for(int i=0;i<checkedCategories.length;i++)
-                            checkedCategories[i]=false;
-                        mUserCategoriesSelection.clear();
-                        if(psFragment!=null&&psFragment.isVisible())
-                            psFragment.filterGamesByCategory(mUserCategoriesSelection);
-                        else if(xboxOneFragment!=null&&xboxOneFragment.isVisible())
-                            xboxOneFragment.filterGamesByCategory(mUserCategoriesSelection);
 
-                    }
-                });
-                AlertDialog mDialog = mBuilder.create();
-                mDialog.show();
-            }
-        });
-
-    }
-    public void resetFilterChoices(){
-        for(int i=0;i<checkedCategories.length;i++)
-            checkedCategories[i]=false;
-        mUserCategoriesSelection.clear();
-    }
 
 }
