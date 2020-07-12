@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
@@ -35,8 +37,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView mXboxOneRecycleView;
     private RecyclerView mPs4RecycleView;
     private GameAdapter mGameAdapter;
-
-
+    private ProgressBar homeProggresBar;
+    private TextView xboxText,psText;
     FirebaseFirestore db;
     //   private DatabaseReference mDatabaseReference;
     private List<Game> mPs4Games;
@@ -55,7 +57,9 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
         mXboxOneRecycleView = view.findViewById(R.id.xbox_one_recycler_view);
         mPs4RecycleView = view.findViewById(R.id.ps4_recycler_view);
-
+        homeProggresBar = view.findViewById(R.id.home_proggressBar);
+        xboxText = view.findViewById(R.id.xbox_text);
+        psText = view.findViewById(R.id.ps_text);
         mXboxOneRecycleView.setHasFixedSize(true);
         mPs4RecycleView.setHasFixedSize(true);
 
@@ -75,6 +79,9 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            psText.setVisibility(View.VISIBLE);
+                            xboxText.setVisibility(View.VISIBLE);
+                            homeProggresBar.setVisibility(View.GONE);
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
@@ -84,7 +91,9 @@ public class HomeFragment extends Fragment {
                             mGameAdapter = new GameAdapter(HomeFragment.this.getContext(),mXboxOneGames);
                             mXboxOneRecycleView.setAdapter(mGameAdapter);
                         } else {
-                            Log.d("TAG Error", "task.getException()");
+                            psText.setVisibility(View.GONE);
+                            xboxText.setVisibility(View.GONE);
+                            homeProggresBar.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -96,6 +105,8 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
@@ -105,7 +116,7 @@ public class HomeFragment extends Fragment {
                             mGameAdapter = new GameAdapter(HomeFragment.this.getContext(),mPs4Games);
                             mPs4RecycleView.setAdapter(mGameAdapter);
                         } else {
-                            Log.d("TAG Error", "task.getException()");
+
                         }
                     }
                 });

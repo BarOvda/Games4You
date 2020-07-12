@@ -51,22 +51,47 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
     public int getItemCount() {
         return mGames.size();
     }
-
+    public void filterByCategories(List<String> categories){
+        if(categories.isEmpty()) {
+            mGames.clear();
+            mGames.addAll(mGamesFull);
+            notifyDataSetChanged();
+        }
+        for(String category:categories){
+            getFilter().filter("category:"+category);
+        }
+    }
     @Override
     public Filter getFilter() {
         return gamesFilter;
     }
+
     private Filter gamesFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
            List<Game> filteredGames = new ArrayList<>();
+           boolean categoriesFlag = false;
+            if(constraint.length()>8&&constraint.toString().contains("category:")){
+                constraint = constraint.subSequence(9,constraint.length());
+                categoriesFlag = true;
+            }
            if(constraint == null || constraint.length()==0){
                 filteredGames.addAll(mGamesFull);
            }else{
+
                String filterPattern = constraint.toString().toLowerCase().trim();
                for(Game game:mGamesFull){
+                   if(categoriesFlag==false){
                    if(game.getName().toLowerCase().contains(filterPattern)){
                        filteredGames.add(game);
+                   }
+                   }else{
+                       for(Categories category:game.getmCategories()){
+                           if(category.toString().toLowerCase().equals(filterPattern)){
+                               filteredGames.add(game);
+                           }
+                       }
+
                    }
                }
            }

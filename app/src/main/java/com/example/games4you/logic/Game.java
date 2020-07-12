@@ -14,7 +14,7 @@ public class Game implements Serializable {
     private String mTrailer;
     private String mGamePlay;
     public Game(){
-
+        this.mCategories = new ArrayList<>();
     }
 
     public Game(String mName, String mImageUrl, String mDescription, String mTrailer, String mGamePlay) {

@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +36,9 @@ import java.util.List;
 public class XboxOneFragment extends Fragment {
     private RecyclerView mRecycleView;
     private GameAdapter mGameAdapter;
+    private ProgressBar progressBar;
 
+    private final static int NUMBER_OF_GAMES_IN_A_ROW = 2;
 
     FirebaseFirestore db;
     //   private DatabaseReference mDatabaseReference;
@@ -54,6 +58,7 @@ public class XboxOneFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_xbox_one,container,false);
         mRecycleView = view.findViewById(R.id.recycler_view);
+        progressBar =  view.findViewById(R.id.progressBar);
 
         mRecycleView.setHasFixedSize(true);
         mRecycleView.setLayoutManager((new LinearLayoutManager(this.getContext())));//cheak
@@ -67,21 +72,21 @@ public class XboxOneFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            progressBar.setVisibility(View.GONE);
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
-
-
-
-
                                 mGames.add(game);
 
                                 Log.d("Data tag", document.getId() + " => " + document.getData());
                             }
                             mGameAdapter = new GameAdapter(XboxOneFragment.this.getContext(),mGames);
+                            mRecycleView.setLayoutManager(new GridLayoutManager(getContext(), NUMBER_OF_GAMES_IN_A_ROW));
+
                             mRecycleView.setAdapter(mGameAdapter);
                         } else {
-                            Log.d("TAG Error", "task.getException()");
+                            progressBar.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -93,6 +98,11 @@ public class XboxOneFragment extends Fragment {
 
     public void searchFilter(String txt) {
         mGameAdapter.getFilter().filter(txt);
+    }
+
+    public void filterGamesByCategory(List<String> mUserCategoriesSelection) {
+        mGameAdapter.filterByCategories(mUserCategoriesSelection);
+
     }
 }
 
