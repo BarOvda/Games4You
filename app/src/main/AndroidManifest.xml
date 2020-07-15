@@ -25,6 +25,9 @@
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme">
         </activity>
+        <activity android:name=".GamePageActivity"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>

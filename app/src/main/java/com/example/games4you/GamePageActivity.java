@@ -2,10 +2,12 @@ package com.example.games4you;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.squareup.picasso.Picasso;
 
 public class GamePageActivity extends YouTubeBaseActivity {
 
@@ -30,6 +33,8 @@ public class GamePageActivity extends YouTubeBaseActivity {
     private Button btnPlayGamePlay;
     private Game mGame;
     private TextView description;
+    private TextView name;
+    private ImageView pic;
 
 
     @Override
@@ -42,9 +47,14 @@ public class GamePageActivity extends YouTubeBaseActivity {
         btnPlayTrial = findViewById(R.id.play_trial_btn);
         btnPlayGamePlay = findViewById(R.id.play_gameplay_btn);
         description = findViewById(R.id.game_description);
+        name = findViewById(R.id.game_name);
+        pic = findViewById(R.id.game_image);
 
         //============ get game from other activity\fragment ================
         mGame = (Game)getIntent().getSerializableExtra("game");
+        Log.e("GAME","name: " + mGame.getName()+ " des: " + mGame.getmDescription()) ;
+        name.setText(mGame.getName());
+        Picasso.get().load(mGame.getImageUrl()).into(pic);
         description.setText(mGame.getmDescription());
         //====================================================================
 
