@@ -74,8 +74,9 @@ public class HomeFragment extends Fragment {
         mXboxOneRecycleView.setLayoutManager(xboxoneLayoutManager);
         mPs4RecycleView.setLayoutManager(ps4LayoutManager);
 
+        //ebay plugin Test
         EbayDriver driver = new EbayDriver();
-        String tag = "Velo binding machine";
+        String tag = "The Last Of Us";
         try {
             driver.runDriver(java.net.URLEncoder.encode(tag, "UTF-8"));
         } catch (Exception e) {
@@ -115,7 +116,6 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
 

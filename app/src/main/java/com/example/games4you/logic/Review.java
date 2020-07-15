@@ -1,0 +1,60 @@
+package com.example.games4you.logic;
+
+public class Review {
+
+
+    private String game;
+    private String user_email;
+    private double rating;
+    private String review;
+    private String review_title;
+    public Review(){ }
+    public Review(String game, String user_email, double rating, String review, String review_title) {
+        this.game = game;
+        this.user_email = user_email;
+        this.rating = rating;
+        this.review = review;
+        this.review_title = review_title;
+    }
+
+    public String getGame() {
+        return game;
+    }
+
+    public void setGame(String game) {
+        this.game = game;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
+
+    public String getReview_title() {
+        return review_title;
+    }
+
+    public void setReview_title(String review_title) {
+        this.review_title = review_title;
+    }
+    public String getUser_email() {
+        return user_email;
+    }
+
+    public void setUser_email(String user_email) {
+        this.user_email = user_email;
+    }
+
+
+}
