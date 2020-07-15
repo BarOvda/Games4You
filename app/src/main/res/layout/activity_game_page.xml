@@ -4,48 +4,70 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/main_style">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/pic_name"
-            android:layout_width="357dp"
-            android:layout_height="218dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/game_description"
+        <TextView
+            android:id="@+id/game_name"
+            android:layout_width="match_parent"
+            android:layout_height="92dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:textSize="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/game_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"/>
 
-            <ImageView
-                android:id="@+id/game_image"
-                android:layout_width="61dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:contentDescription="@string/game_image"
-                tools:srcCompat="@tools:sample/avatars" />
 
-            <TextView
-                android:id="@+id/game_name"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/game_image"
+            android:layout_width="300dp"
+            android:layout_height="381dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/game_image"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/game_description_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/game_name"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
+            android:id="@+id/game_description_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/desctiprion_game_header"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/game_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.104"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/game_image" />
+
+        <com.borjabravo.readmoretextview.ReadMoreTextView
             android:id="@+id/game_description"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toTopOf="@+id/trial_youtube"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pic_name" />
+            app:layout_constraintTop_toBottomOf="@+id/game_description_txt"
+            app:colorClickableText="@color/expandable"/>
 
         <com.google.android.youtube.player.YouTubePlayerView
             android:id="@+id/trial_youtube"

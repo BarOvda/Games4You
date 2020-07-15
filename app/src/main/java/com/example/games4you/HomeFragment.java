@@ -96,6 +96,9 @@ public class HomeFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
+                                game.setmDescription((String)document.get("description"));
+                                game.setmTrailer((String)document.get("trial"));
+                                game.setmGamePlay((String)document.get("gameplay"));
                                 mXboxOneGames.add(game);
 
                             }
@@ -120,6 +123,9 @@ public class HomeFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
+                                game.setmDescription((String)document.get("description"));
+                                game.setmTrailer((String)document.get("trial"));
+                                game.setmGamePlay((String)document.get("gameplay"));
                                 mPs4Games.add(game);
 
                             }

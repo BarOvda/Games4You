@@ -1,6 +1,8 @@
 package com.example.games4you.logic;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.games4you.GamePageActivity;
 import com.example.games4you.R;
 import com.squareup.picasso.Picasso;
 
@@ -38,13 +42,23 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GameViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final GameViewHolder holder, final int position) {
         Game gameCurrent =mGames.get(position);
         holder.textViewName.setText((gameCurrent.getName()));
         Picasso.get().load(gameCurrent.getImageUrl())
         .fit()
         .centerCrop()
         .into(holder.imageView);
+
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, GamePageActivity.class);
+                intent.putExtra("game", mGames.get(position));
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -112,11 +126,13 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
     public class GameViewHolder extends RecyclerView.ViewHolder {
             public TextView textViewName;
             public ImageView imageView;
+            public CardView parentLayout;
 
             public GameViewHolder(View itemView){
                 super(itemView);
                 textViewName= itemView.findViewById(R.id.game_view_name);
                 imageView= itemView.findViewById(R.id.game_view_image);
+                parentLayout = itemView.findViewById(R.id.game_item_parent_layout);
         }
     }
 

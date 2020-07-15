@@ -10,4 +10,5 @@
     <string name="play_gameplay_btn">Play Gameplay</string>
     <string name="review_game_header">Reviews</string>
     <string name="game_image">Game Image</string>
+    <string name="desctiprion_game_header">Description</string>
 </resources>
