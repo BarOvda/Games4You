@@ -61,24 +61,24 @@ public class GamePageActivity extends YouTubeBaseActivity {
         onInitializedListenerTrial = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                youTubePlayer.setShowFullscreenButton(false);
                 youTubePlayer.loadVideo(mGame.getmTrailer());
             }
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-//                Toast.makeText ( , "Video Failed To Load", Toast.LENGTH_LONG);
             }
         };
 
         onInitializedListenerGamePlay = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                youTubePlayer.setShowFullscreenButton(false);
                 youTubePlayer.loadPlaylist(mGame.getmGamePlay());
             }
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-//                Toast.makeText(view.getContext(), "Video Failed To Load", Toast.LENGTH_LONG);
             }
         };
 

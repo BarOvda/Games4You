@@ -12,14 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.games4you.GamePageActivity;
-import com.example.games4you.MainActivity;
 import com.example.games4you.R;
 import com.squareup.picasso.Picasso;
 

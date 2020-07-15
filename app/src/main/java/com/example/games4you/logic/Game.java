@@ -59,4 +59,16 @@ public class Game implements Serializable {
     public String getmTrailer() { return mTrailer; }
 
     public String getmGamePlay() { return mGamePlay; }
+
+    public void setmDescription(String mDescription) {
+        this.mDescription = mDescription;
+    }
+
+    public void setmTrailer(String mTrailer) {
+        this.mTrailer = mTrailer;
+    }
+
+    public void setmGamePlay(String mGamePlay) {
+        this.mGamePlay = mGamePlay;
+    }
 }
