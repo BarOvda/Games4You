@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.games4you.logic.Game;
 import com.example.games4you.logic.GameAdapter;
+import com.example.games4you.logic.ebay_plugin.EbayDriver;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 
@@ -72,6 +73,15 @@ public class HomeFragment extends Fragment {
 
         mXboxOneRecycleView.setLayoutManager(xboxoneLayoutManager);
         mPs4RecycleView.setLayoutManager(ps4LayoutManager);
+
+        EbayDriver driver = new EbayDriver();
+        String tag = "Velo binding machine";
+        try {
+            driver.runDriver(java.net.URLEncoder.encode(tag, "UTF-8"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         db.collection("xbox_one_games")
                 .get()

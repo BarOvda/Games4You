@@ -32,6 +32,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class PS4Fragment extends Fragment {
     private ImageView filterView;
     boolean[] checkedCategories;
     String[] listCategories;
+    String[] listCategoriesToDisplay;
     List<String> mUserCategoriesSelection;
     private final static int NUMBER_OF_GAMES_IN_A_ROW = 2;
 
@@ -71,6 +74,7 @@ public class PS4Fragment extends Fragment {
         filterView = view.findViewById(R.id.search_button_filter);
         mUserCategoriesSelection = new ArrayList<>();
         listCategories = new String[Categories.values().length];
+        listCategoriesToDisplay = new String[Categories.values().length];
         getAllCategories();
 
         checkedCategories = new boolean[listCategories.length];
@@ -132,7 +136,7 @@ public class PS4Fragment extends Fragment {
                 Log.d("filter","pressed");
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
                 mBuilder.setTitle("Games Filter");
-                mBuilder.setMultiChoiceItems(listCategories, checkedCategories, new DialogInterface.OnMultiChoiceClickListener() {
+                mBuilder.setMultiChoiceItems(listCategoriesToDisplay, checkedCategories, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int position, boolean isChecked) {
                         //     if(isChecked){
@@ -182,8 +186,24 @@ public class PS4Fragment extends Fragment {
         int i=0;
         for (Categories category : Categories.values()) {
             listCategories[i] = category.toString();
+            listCategoriesToDisplay[i] =onlyAlphabet(category.toString());
             i++;
         }
+    }
+    private  String stripAccents(String s) {
+        String s1 = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s1 = s1.replaceAll("[\\p{InCombiningDiacriticalMarks}]", " ");
+
+        return s1;
+    }
+    private String onlyAlphabet (String string){
+        return stripAccents(string)
+                // deletes anything not letter or space
+                .replaceAll("[^A-Za-z\\s]", " ")
+                // converts chains of blanks in single spaces
+                .replaceAll("\\s{2,}", " ")
+                // gets lower case
+                .toLowerCase();
     }
     public void resetFilterChoices(){
         for(int i=0;i<checkedCategories.length;i++)
