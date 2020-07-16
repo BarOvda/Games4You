@@ -167,11 +167,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         homeFragment).commit();
                 break;
             case R.id.nav_settings:
-                ReviewFragment r = new ReviewFragment();
-                r.setmGameConsoleType("ps4");
+//                ReviewFragment r = new ReviewFragment();
+//                r.setmGameConsoleType("ps4");
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        r).commit();
+                        settingsFragment).commit();
                 break;
             case R.id.nav_log_out:
 
