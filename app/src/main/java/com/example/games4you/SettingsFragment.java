@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -103,16 +104,18 @@ public class SettingsFragment extends Fragment {
                                 User userToDisplay =document.toObject(User.class);
                                 userNameFiled.setText(userToDisplay.getUserName());
                                 String imageUrl = userToDisplay.getImageUrl();
-                                if(imageUrl ==""){
-                                    Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/games4you-d5233.appspot.com/o/users_images%2Fdeafult_icon.png?alt=media&token=3bc92123-7268-447e-9305-d1421ea9dc58")
-                                            .fit()
-                                            .centerCrop()
-                                            .into(userImageView);}
-                                else{
+                                if(Patterns.WEB_URL.matcher(imageUrl).matches()){
                                     Picasso.get().load(imageUrl)
                                             .fit()
                                             .centerCrop()
                                             .into(userImageView);}
+
+//                                if(userImageView.getDrawable() == null){
+//                                    Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/games4you-d5233.appspot.com/o/users_images%2Fdeafult_icon.png?alt=media&token=3bc92123-7268-447e-9305-d1421ea9dc58")
+//                                            .fit()
+//                                            .centerCrop()
+//                                            .into(userImageView);
+//                                }
                             }
 
                         } else {

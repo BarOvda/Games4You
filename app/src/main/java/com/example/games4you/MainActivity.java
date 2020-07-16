@@ -13,10 +13,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -95,16 +97,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                User userToDisplay =document.toObject(User.class);
                                 userNameFiled.setText( userToDisplay.getUserName());
                                 String imageUrl = userToDisplay.getImageUrl();
-                                if(imageUrl ==""){
-                                    Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/games4you-d5233.appspot.com/o/users_images%2Fdeafult_icon.png?alt=media&token=3bc92123-7268-447e-9305-d1421ea9dc58")
+                                if(Patterns.WEB_URL.matcher(imageUrl).matches()){
+                                    Picasso.get().load(imageUrl)
                                             .fit()
                                             .centerCrop()
                                             .into(userImageView);}
-                               else{
-                                   Picasso.get().load(imageUrl)
-                                        .fit()
-                                        .centerCrop()
-                                        .into(userImageView);}
+
+//                               if(userImageView.getDrawable() == null){
+//                                   Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/games4you-d5233.appspot.com/o/users_images%2Fdeafult_icon.png?alt=media&token=3bc92123-7268-447e-9305-d1421ea9dc58")
+//                                           .fit()
+//                                           .centerCrop()
+//                                           .into(userImageView);
+//                               }
                             }
 
                         } else {
@@ -163,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         homeFragment).commit();
                 break;
             case R.id.nav_settings:
+//                ReviewFragment r = new ReviewFragment();
+//                r.setmGameConsoleType("ps4");
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         settingsFragment).commit();
                 break;
