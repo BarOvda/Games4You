@@ -12,6 +12,8 @@ public class Game implements Serializable {
     private String mDescription;
     private String mTrailer;
     private String mGamePlay;
+    private double rating;
+
     public Game(){
         this.mCategories = new ArrayList<>();
     }

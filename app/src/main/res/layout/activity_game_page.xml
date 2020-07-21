@@ -138,6 +138,7 @@
             app:layout_constraintTop_toBottomOf="@+id/play_gameplay_btn" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/game_reviews_recycle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
@@ -148,6 +149,15 @@
             app:layout_constraintTop_toBottomOf="@+id/game_reviews">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="142dp"
+            android:layout_height="130dp"
+            android:id="@+id/ebay_recycle_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/game_reviews_recycle" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

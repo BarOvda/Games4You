@@ -61,6 +61,7 @@ public class GamePageActivity extends YouTubeBaseActivity {
         onInitializedListenerTrial = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+
                 youTubePlayer.setShowFullscreenButton(false);
                 youTubePlayer.loadVideo(mGame.getmTrailer());
             }
