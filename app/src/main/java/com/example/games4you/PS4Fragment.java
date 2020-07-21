@@ -105,7 +105,7 @@ public class PS4Fragment extends Fragment {
                                 i++;
 
                             }
-                            mGameAdapter = new GameAdapter(PS4Fragment.this.getContext(),mGames);
+                            mGameAdapter = new GameAdapter(PS4Fragment.this.getContext(),mGames, getFragmentManager());
                             mRecycleView.setLayoutManager(new GridLayoutManager(getContext(), NUMBER_OF_GAMES_IN_A_ROW));
 
                             mRecycleView.setAdapter(mGameAdapter);

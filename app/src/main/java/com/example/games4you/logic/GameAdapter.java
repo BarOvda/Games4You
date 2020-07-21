@@ -1,5 +1,6 @@
 package com.example.games4you.logic;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.games4you.GamePageActivity;
@@ -27,11 +29,13 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
    private Context mContext;
     private List<Game> mGames;
     private List<Game> mGamesFull;
+    FragmentManager manager;
 
-    public GameAdapter(Context mContext, List<Game> mGames) {
+    public GameAdapter(Context mContext, List<Game> mGames,FragmentManager manager) {
         this.mContext = mContext;
         this.mGames = mGames;
         this.mGamesFull = new ArrayList<>(mGames);
+        this.manager = manager;
     }
 
     @NonNull
@@ -54,9 +58,13 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, GamePageActivity.class);
-                intent.putExtra("game", mGames.get(position));
-                mContext.startActivity(intent);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("game",mGames.get(position));
+                GamePageActivity gamePageActivity = new GamePageActivity();
+                gamePageActivity.setArguments(bundle);
+                manager.beginTransaction().replace(R.id.fragment_container,gamePageActivity).commit();
+
             }
         });
     }

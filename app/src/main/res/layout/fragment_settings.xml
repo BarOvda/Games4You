@@ -77,7 +77,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/feed" />
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -108,8 +108,7 @@
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/message" />
+                        android:layout_gravity="center" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -148,8 +147,7 @@
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/notification" />
+                        android:layout_gravity="center" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -179,8 +177,7 @@
                     <ImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/setting" />
+                        android:layout_gravity="center" />
 
                     <TextView
                         android:layout_width="wrap_content"

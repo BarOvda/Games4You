@@ -63,51 +63,28 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="2dp"
-            app:layout_constraintBottom_toTopOf="@+id/trial_youtube"
+            app:layout_constraintBottom_toTopOf="@+id/play_trial_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/game_description_txt"
             app:colorClickableText="@color/expandable"/>
 
-        <com.google.android.youtube.player.YouTubePlayerView
-            android:id="@+id/trial_youtube"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/play_trial_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/game_description">
-
-        </com.google.android.youtube.player.YouTubePlayerView>
 
         <Button
             android:id="@+id/play_trial_btn"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
+            android:background="@drawable/buttonshape"
             android:gravity="center"
             android:text="@string/play_trial_btn"
-            app:layout_constraintBottom_toTopOf="@+id/gameplay_youtube"
+            app:layout_constraintBottom_toTopOf="@+id/play_gameplay_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trial_youtube">
+            app:layout_constraintTop_toBottomOf="@id/game_description">
 
         </Button>
-
-        <com.google.android.youtube.player.YouTubePlayerView
-            android:id="@+id/gameplay_youtube"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@id/play_gameplay_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/play_trial_btn">
-
-        </com.google.android.youtube.player.YouTubePlayerView>
 
         <Button
             android:id="@+id/play_gameplay_btn"
@@ -116,13 +93,23 @@
             android:layout_marginBottom="50dp"
             android:gravity="center"
             android:text="@string/play_gameplay_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/gameplay_youtube"
-            app:layout_constraintBottom_toTopOf="@+id/game_reviews">
+            app:layout_constraintTop_toBottomOf="@id/play_trial_btn"
+            app:layout_constraintBottom_toTopOf="@+id/review_layout"
+            android:background="@drawable/buttonshape">
 
         </Button>
+
+<LinearLayout
+    android:id="@+id/review_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@+id/play_gameplay_btn"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:orientation="horizontal">
 
         <TextView
             android:id="@+id/game_reviews"
@@ -131,11 +118,22 @@
             android:layout_marginBottom="50dp"
             android:text="@string/review_game_header"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.104"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/play_gameplay_btn" />
+            android:layout_gravity="start"/>
+
+    <TextView
+        android:id="@+id/add_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="200dp"
+        android:alpha="0.50"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:text="@string/add_review_btn"
+        android:layout_gravity="end">
+
+    </TextView>
+
+</LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -145,9 +143,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/game_reviews">
+            app:layout_constraintTop_toBottomOf="@+id/review_layout">
 
         </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

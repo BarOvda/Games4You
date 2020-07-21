@@ -102,7 +102,7 @@ public class HomeFragment extends Fragment {
                                 mXboxOneGames.add(game);
 
                             }
-                            mGameAdapter = new GameAdapter(HomeFragment.this.getContext(),mXboxOneGames);
+                            mGameAdapter = new GameAdapter(HomeFragment.this.getContext(),mXboxOneGames,getFragmentManager());
                             mXboxOneRecycleView.setAdapter(mGameAdapter);
                         } else {
                             psText.setVisibility(View.GONE);
@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment {
                                 mPs4Games.add(game);
 
                             }
-                            mGameAdapter = new GameAdapter(HomeFragment.this.getContext(),mPs4Games);
+                            mGameAdapter = new GameAdapter(HomeFragment.this.getContext(),mPs4Games,getFragmentManager());
                             mPs4RecycleView.setAdapter(mGameAdapter);
                         } else {
 

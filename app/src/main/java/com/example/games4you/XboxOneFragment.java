@@ -101,7 +101,7 @@ public class XboxOneFragment extends Fragment {
 
                                 Log.d("Data tag", document.getId() + " => " + document.getData());
                             }
-                            mGameAdapter = new GameAdapter(XboxOneFragment.this.getContext(),mGames);
+                            mGameAdapter = new GameAdapter(XboxOneFragment.this.getContext(),mGames, getFragmentManager());
                             mRecycleView.setLayoutManager(new GridLayoutManager(getContext(), NUMBER_OF_GAMES_IN_A_ROW));
 
                             mRecycleView.setAdapter(mGameAdapter);

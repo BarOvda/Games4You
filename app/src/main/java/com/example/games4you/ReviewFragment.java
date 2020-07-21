@@ -33,25 +33,26 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewFragment extends Fragment {
-  private String mGameName;
-   private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
 
 
     private String mGameTitle;
     private String mGameConsoleType;
-   private ImageView mGamePhoto;
-   private RatingBar mRating;
-   private TextView mHeader;
+    private ImageView mGamePhoto;
+    private RatingBar mRating;
+    private TextView mHeader;
     private EditText mReviewTitle;
     private EditText mReview;
     private Button mSubmitButton;
+    private Game mGame;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,57 +63,59 @@ public class ReviewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_review, container, false);
-
+        mGame = (Game) getArguments().getSerializable("game");
 
         mGamePhoto = view.findViewById(R.id.game_photo);
-        mRating = (RatingBar)  view.findViewById(R.id.user_rating);
+        mRating = (RatingBar) view.findViewById(R.id.user_rating);
         mHeader = view.findViewById(R.id.textView3);
         mReviewTitle = view.findViewById(R.id.user_review_title);
         mReview = view.findViewById(R.id.user_review);
         mSubmitButton = view.findViewById(R.id.submit_review);
 
         //for testing
-        mGameTitle = "The Last Of Us 2";
+        mGameTitle = mGame.getName();
+        Picasso.get().load(mGame.getImageUrl()).into(mGamePhoto);
+        mGameConsoleType = "ps4";
 
 
         mRating.setNumStars(5);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double rating = (double)mRating.getRating();
+                double rating = (double) mRating.getRating();
                 String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
-                Review review = new Review(mGameTitle,userEmail,rating,
-                        mReview.getText().toString(),mReviewTitle.getText().toString());
+                Review review = new Review(mGameTitle, userEmail, rating,
+                        mReview.getText().toString(), mReviewTitle.getText().toString());
                 setFragmentVisabilty();
-                if(mGameConsoleType.equals("ps4")){
+                if (mGameConsoleType.equals("ps4")) {
                     db.collection("ps4_games")
                             .document(mGameTitle)
                             .collection("reviews")
                             .document(userEmail)
                             .set(review)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(getContext(), "Your review was upload", Toast.LENGTH_SHORT).show();
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                    new HomeFragment(),"XBOX_ONE_FRAGMENT").commit();
-                        }
-                    });}
-                else if(mGameConsoleType.equals("XboxOne")){
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(getContext(), "Your review was upload", Toast.LENGTH_SHORT).show();
+                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                            new HomeFragment(), "PS4_FRAGMENT").commit();
+                                }
+                            });
+                } else if (mGameConsoleType.equals("XboxOne")) {
                     db.collection("xbox_one_games")
                             .document(mGameTitle)
                             .collection("reviews")
                             .document(userEmail)
                             .set(review)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(getContext(), "Your review was upload", Toast.LENGTH_SHORT).show();
-                          getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                    new HomeFragment(),"XBOX_ONE_FRAGMENT").commit();
-                        }
-                    });}
-
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(getContext(), "Your review was upload", Toast.LENGTH_SHORT).show();
+                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                            new HomeFragment(), "XBOX_ONE_FRAGMENT").commit();
+                                }
+                            });
+                }
             }
         })
         ;
@@ -143,6 +146,7 @@ public class ReviewFragment extends Fragment {
     public void setmGameConsoleType(String mGameConsoleType) {
         this.mGameConsoleType = mGameConsoleType;
     }
+
     public String getmGameTitle() {
         return mGameTitle;
     }
