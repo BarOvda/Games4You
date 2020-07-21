@@ -45,7 +45,6 @@ public class GamePageActivity extends Fragment {
         description.setText(mGame.getmDescription());
         //====================================================================
 
-
         btnPlayTrial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
