@@ -12,15 +12,17 @@ public class Game implements Serializable {
     private String mDescription;
     private String mTrailer;
     private String mGamePlay;
+    private String mConsole;
     private double rating;
 
     public Game(){
         this.mCategories = new ArrayList<>();
     }
 
-    public Game(String mName, String mImageUrl, String mDescription, String mTrailer, String mGamePlay) {
+    public Game(String mName, String mImageUrl, String mDescription, String mTrailer, String mGamePlay, String mConsole) {
         this.mName = mName;
         this.mImageUrl = mImageUrl;
+        this.mConsole = mConsole;
         this.mCategories = new ArrayList<>();
         this.mDescription = mDescription;
         this.mTrailer = mTrailer;
@@ -72,5 +74,37 @@ public class Game implements Serializable {
 
     public void setmGamePlay(String mGamePlay) {
         this.mGamePlay = mGamePlay;
+    }
+
+    public String getmName() {
+        return mName;
+    }
+
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
+
+    public String getmImageUrl() {
+        return mImageUrl;
+    }
+
+    public void setmImageUrl(String mImageUrl) {
+        this.mImageUrl = mImageUrl;
+    }
+
+    public String getmConsole() {
+        return mConsole;
+    }
+
+    public void setmConsole(String mConsole) {
+        this.mConsole = mConsole;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

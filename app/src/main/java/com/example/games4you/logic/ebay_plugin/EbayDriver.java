@@ -2,12 +2,16 @@ package com.example.games4you.logic.ebay_plugin;
 
 import android.util.Log;
 
+import com.example.games4you.logic.EbayTitle;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,13 +27,14 @@ public class EbayDriver {
 
     public final static String EBAY_FINDING_SERVICE_URI = "https://svcs.ebay.com/services/search/FindingService/v1?SECURITY-APPNAME="
             + "{applicationId}&OPERATION-NAME={operation}&SERVICE-VERSION={version}"
-            + "&REST-PAYLOAD&keywords={keywords}&paginationInput.entriesPerPage={maxresults}"
+            +"&RESPONSE-DATA-FORMAT=XML"
+            + "&REST-PAYLOAD=true&keywords={keywords}&paginationInput.entriesPerPage={maxresults}"
             + "&GLOBAL-ID={globalId}&siteid=0";
     public static final String SERVICE_VERSION = "1.0.0";
-    public static final String OPERATION_NAME = "findItemsByKeywords";
+    public static final String OPERATION_NAME = "findItemsByKeywords"/*findItemsAdvanced*/;
     public static final String GLOBAL_ID = "EBAY-US";
-    public final static int REQUEST_DELAY = 3000;
-    public final static int MAX_RESULTS = 3;
+    public final static int REQUEST_DELAY = 0;
+    public final static int MAX_RESULTS = 6;
     private int maxResults;
     private Thread thread = new Thread(new Runnable() {
 
@@ -51,13 +56,16 @@ public class EbayDriver {
         }
     });
     private String tag;
-
+      private List<EbayTitle> titles;
 
     public EbayDriver() {
+        this.titles = new ArrayList<>();
         this.maxResults = MAX_RESULTS;
     }
 
     public EbayDriver(int maxResults) {
+        this.titles = new ArrayList<>();
+
         this.maxResults = maxResults;
     }
 
@@ -105,15 +113,21 @@ public class EbayDriver {
         NodeList nodes = (NodeList) itemExpression.evaluate(doc, XPathConstants.NODESET);
 
         for (int i = 0; i < nodes.getLength(); i++) {
-
+            EbayTitle tmp = new EbayTitle();
             Node node = nodes.item(i);
 
             String itemId = (String) xpath.evaluate("itemId", node, XPathConstants.STRING);
             String title = (String) xpath.evaluate("title", node, XPathConstants.STRING);
             String itemUrl = (String) xpath.evaluate("viewItemURL", node, XPathConstants.STRING);
             String galleryUrl = (String) xpath.evaluate("galleryURL", node, XPathConstants.STRING);
-
             String currentPrice = (String) xpath.evaluate("sellingStatus/currentPrice", node, XPathConstants.STRING);
+
+            tmp.setCurrentPrice(currentPrice);
+            tmp.setGalleryUrl(galleryUrl);
+            tmp.setTitle(title);
+            tmp.setItemId(itemId);
+            tmp.setItemUrl(itemUrl);
+            titles.add(tmp);
 
             Log.d("currentPrice", currentPrice);
             Log.d("itemId", itemId);
@@ -125,6 +139,6 @@ public class EbayDriver {
         is.close();
 
     }
-
+public List<EbayTitle> getTitles(){return this.titles;}
 
 }

@@ -61,6 +61,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("game",mGames.get(position));
+                bundle.putString("console",mGames.get(position).getmConsole());
                 GamePageActivity gamePageActivity = new GamePageActivity();
                 gamePageActivity.setArguments(bundle);
                 manager.beginTransaction().replace(R.id.fragment_container,gamePageActivity).commit();
