@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 
 import com.example.games4you.logic.Categories;
 import com.example.games4you.logic.User;
+import com.example.games4you.services.MyLocationService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;

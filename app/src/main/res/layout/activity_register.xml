@@ -4,17 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register"
-    android:background="@drawable/main_style">
+    android:background="@drawable/main_style"
+    tools:context=".Register">
 
 
     <EditText
         android:id="@+id/emailText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginBottom="28dp"
+        android:background="@drawable/passowrd_and_email_edittext_bacground"
         android:ems="10"
         android:hint="Email"
+
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/user_name_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,8 +27,9 @@
         android:id="@+id/user_name_text"
 
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginBottom="28dp"
+        android:background="@drawable/passowrd_and_email_edittext_bacground"
         android:ems="10"
         android:hint="User Name"
         android:inputType="textEmailAddress"
@@ -38,8 +41,9 @@
     <EditText
         android:id="@+id/passwordText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginBottom="52dp"
+        android:background="@drawable/passowrd_and_email_edittext_bacground"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
@@ -49,10 +53,10 @@
 
     <Button
         android:id="@+id/signUpButton"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-
         android:layout_marginBottom="32dp"
+        android:background="@drawable/sgin_in_button_background"
         android:text="Register"
         app:layout_constraintBottom_toTopOf="@+id/progressBar3"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,13 +75,13 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="253dp"
+        android:layout_width="409dp"
         android:layout_height="157dp"
         app:layout_constraintBottom_toTopOf="@+id/emailText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.67"
+        app:layout_constraintVertical_bias="0.421"
         app:srcCompat="@drawable/games4u_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

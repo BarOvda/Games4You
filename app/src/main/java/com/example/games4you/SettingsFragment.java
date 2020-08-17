@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -110,12 +111,8 @@ public class SettingsFragment extends Fragment {
                                             .centerCrop()
                                             .into(userImageView);}
 
-//                                if(userImageView.getDrawable() == null){
-//                                    Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/games4you-d5233.appspot.com/o/users_images%2Fdeafult_icon.png?alt=media&token=3bc92123-7268-447e-9305-d1421ea9dc58")
-//                                            .fit()
-//                                            .centerCrop()
-//                                            .into(userImageView);
-//                                }
+
+
                             }
 
                         } else {
@@ -126,6 +123,19 @@ public class SettingsFragment extends Fragment {
         userPhoto.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 openFileChooser();
+            }
+        });
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new HomeFragment()).commit();
+                    return true;
+                }
+                return false;
             }
         });
         return  view;

@@ -41,7 +41,6 @@ public class HomeFragment extends Fragment {
     private ProgressBar homeProggresBar;
     private TextView xboxText,psText;
     FirebaseFirestore db;
-    //   private DatabaseReference mDatabaseReference;
     private List<Game> mPs4Games;
     private List<Game> mXboxOneGames;
     @Override
@@ -74,14 +73,6 @@ public class HomeFragment extends Fragment {
         mXboxOneRecycleView.setLayoutManager(xboxoneLayoutManager);
         mPs4RecycleView.setLayoutManager(ps4LayoutManager);
 
-        //ebay plugin Test
-        EbayDriver driver = new EbayDriver();
-        String tag = "The Last Of Us";
-        try {
-            driver.runDriver(java.net.URLEncoder.encode(tag, "UTF-8"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 
         db.collection("xbox_one_games")
@@ -97,9 +88,9 @@ public class HomeFragment extends Fragment {
 
                                 Game game = document.toObject(Game.class);
                                 game.setmDescription((String)document.get("description"));
-                                game.setmTrailer((String)document.get("trailer"));
+                                game.setmTrailer((String)document.get("trial"));
                                 game.setmGamePlay((String)document.get("gameplay"));
-                                game.setmConsoleType((String)document.get("console"));
+                                game.setmConsole("xbox_one_games");
                                 mXboxOneGames.add(game);
 
                             }
@@ -125,9 +116,9 @@ public class HomeFragment extends Fragment {
 
                                 Game game = document.toObject(Game.class);
                                 game.setmDescription((String)document.get("description"));
-                                game.setmTrailer((String)document.get("trailer"));
+                                game.setmTrailer((String)document.get("trial"));
                                 game.setmGamePlay((String)document.get("gameplay"));
-                                game.setmConsoleType((String)document.get("console"));
+                                game.setmConsole("ps4_games");
                                 mPs4Games.add(game);
 
                             }

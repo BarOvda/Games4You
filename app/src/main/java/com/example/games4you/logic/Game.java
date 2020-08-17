@@ -12,21 +12,21 @@ public class Game implements Serializable {
     private String mDescription;
     private String mTrailer;
     private String mGamePlay;
+    private String mConsole;
     private double rating;
-    private String mConsoleType;
 
     public Game(){
         this.mCategories = new ArrayList<>();
     }
 
-    public Game(String mName, String mImageUrl, String mDescription, String mTrailer, String mGamePlay, String mConsoleType) {
+    public Game(String mName, String mImageUrl, String mDescription, String mTrailer, String mGamePlay, String mConsole) {
         this.mName = mName;
         this.mImageUrl = mImageUrl;
+        this.mConsole = mConsole;
         this.mCategories = new ArrayList<>();
         this.mDescription = mDescription;
         this.mTrailer = mTrailer;
         this.mGamePlay = mGamePlay;
-        this.mConsoleType = mConsoleType;
     }
 
     public String getName() {
@@ -76,11 +76,35 @@ public class Game implements Serializable {
         this.mGamePlay = mGamePlay;
     }
 
-    public String getmConsoleType() {
-        return mConsoleType;
+    public String getmName() {
+        return mName;
     }
 
-    public void setmConsoleType(String mConsoleType) {
-        this.mConsoleType = mConsoleType;
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
+
+    public String getmImageUrl() {
+        return mImageUrl;
+    }
+
+    public void setmImageUrl(String mImageUrl) {
+        this.mImageUrl = mImageUrl;
+    }
+
+    public String getmConsole() {
+        return mConsole;
+    }
+
+    public void setmConsole(String mConsole) {
+        this.mConsole = mConsole;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

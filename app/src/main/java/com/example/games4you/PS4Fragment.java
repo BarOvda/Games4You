@@ -4,6 +4,7 @@ package com.example.games4you;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -105,6 +106,7 @@ public class PS4Fragment extends Fragment {
                                 game.setmConsoleType((String)document.get("console"));
                                 if(i==0)
                                     game.addCategory(Categories.HORROR);
+                                game.setmConsole("ps4_games");
                                 mGames.add(game);
                                 i++;
 
@@ -118,7 +120,19 @@ public class PS4Fragment extends Fragment {
                         }
                     }
                 });
-
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new HomeFragment()).commit();
+                    return true;
+                }
+                return false;
+            }
+        });
         return  view;
 
     }
