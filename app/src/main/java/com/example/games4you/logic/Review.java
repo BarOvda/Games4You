@@ -1,20 +1,27 @@
 package com.example.games4you.logic;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+
 public class Review {
 
-
+    private String user_name;
     private String game;
     private String user_email;
     private double rating;
     private String review;
     private String review_title;
-    public Review(){ }
-    public Review(String game, String user_email, double rating, String review, String review_title) {
+
+    public Review() {
+    }
+
+    public Review(String game, String user_email, double rating, String review, String review_title, String user_name) {
         this.game = game;
         this.user_email = user_email;
         this.rating = rating;
         this.review = review;
         this.review_title = review_title;
+        this.user_name = user_name;
     }
 
     public String getGame() {
@@ -48,6 +55,7 @@ public class Review {
     public void setReview_title(String review_title) {
         this.review_title = review_title;
     }
+
     public String getUser_email() {
         return user_email;
     }
@@ -56,5 +64,23 @@ public class Review {
         this.user_email = user_email;
     }
 
+    public String getUser_name() {
+        return user_name;
+    }
 
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public static DiffUtil.ItemCallback<Review> itemCallback = new DiffUtil.ItemCallback<Review>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Review oldItem, @NonNull Review newItem) {
+            return oldItem.getUser_email().equals(newItem.user_email);
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Review oldItem, @NonNull Review newItem) {
+            return false;
+        }
+    };
 }

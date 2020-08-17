@@ -72,20 +72,19 @@ public class ReviewFragment extends Fragment {
         mReview = view.findViewById(R.id.user_review);
         mSubmitButton = view.findViewById(R.id.submit_review);
 
-        //for testing
         mGameTitle = mGame.getName();
         Picasso.get().load(mGame.getImageUrl()).into(mGamePhoto);
-        mGameConsoleType = "ps4";
-
+        mGameConsoleType = mGame.getmConsoleType();
 
         mRating.setNumStars(5);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 double rating = (double) mRating.getRating();
-                String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail().toString();
+                String userEmail = currentUser.getEmail();
+                String userName = currentUser.getDisplayName();
                 Review review = new Review(mGameTitle, userEmail, rating,
-                        mReview.getText().toString(), mReviewTitle.getText().toString());
+                        mReview.getText().toString(), mReviewTitle.getText().toString(), userName);
                 setFragmentVisabilty();
                 if (mGameConsoleType.equals("ps4")) {
                     db.collection("ps4_games")
@@ -101,7 +100,7 @@ public class ReviewFragment extends Fragment {
                                             new HomeFragment(), "PS4_FRAGMENT").commit();
                                 }
                             });
-                } else if (mGameConsoleType.equals("XboxOne")) {
+                } else if (mGameConsoleType.equals("xbox")) {
                     db.collection("xbox_one_games")
                             .document(mGameTitle)
                             .collection("reviews")

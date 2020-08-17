@@ -12,4 +12,6 @@
     <string name="game_image">Game Image</string>
     <string name="desctiprion_game_header">Description</string>
     <string name="add_review_btn">Add Review</string>
+    <string name="review_title">Title: </string>
+    <string name="review_user_name">User: </string>
 </resources>

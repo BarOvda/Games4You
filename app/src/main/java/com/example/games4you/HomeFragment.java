@@ -97,8 +97,9 @@ public class HomeFragment extends Fragment {
 
                                 Game game = document.toObject(Game.class);
                                 game.setmDescription((String)document.get("description"));
-                                game.setmTrailer((String)document.get("trial"));
+                                game.setmTrailer((String)document.get("trailer"));
                                 game.setmGamePlay((String)document.get("gameplay"));
+                                game.setmConsoleType((String)document.get("console"));
                                 mXboxOneGames.add(game);
 
                             }
@@ -124,8 +125,9 @@ public class HomeFragment extends Fragment {
 
                                 Game game = document.toObject(Game.class);
                                 game.setmDescription((String)document.get("description"));
-                                game.setmTrailer((String)document.get("trial"));
+                                game.setmTrailer((String)document.get("trailer"));
                                 game.setmGamePlay((String)document.get("gameplay"));
+                                game.setmConsoleType((String)document.get("console"));
                                 mPs4Games.add(game);
 
                             }

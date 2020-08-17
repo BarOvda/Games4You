@@ -13,18 +13,20 @@ public class Game implements Serializable {
     private String mTrailer;
     private String mGamePlay;
     private double rating;
+    private String mConsoleType;
 
     public Game(){
         this.mCategories = new ArrayList<>();
     }
 
-    public Game(String mName, String mImageUrl, String mDescription, String mTrailer, String mGamePlay) {
+    public Game(String mName, String mImageUrl, String mDescription, String mTrailer, String mGamePlay, String mConsoleType) {
         this.mName = mName;
         this.mImageUrl = mImageUrl;
         this.mCategories = new ArrayList<>();
         this.mDescription = mDescription;
         this.mTrailer = mTrailer;
         this.mGamePlay = mGamePlay;
+        this.mConsoleType = mConsoleType;
     }
 
     public String getName() {
@@ -72,5 +74,13 @@ public class Game implements Serializable {
 
     public void setmGamePlay(String mGamePlay) {
         this.mGamePlay = mGamePlay;
+    }
+
+    public String getmConsoleType() {
+        return mConsoleType;
+    }
+
+    public void setmConsoleType(String mConsoleType) {
+        this.mConsoleType = mConsoleType;
     }
 }
