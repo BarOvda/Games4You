@@ -14,4 +14,7 @@
     <string name="add_review_btn">Add Review</string>
     <string name="review_title">Title: </string>
     <string name="review_user_name">User: </string>
+    <string name="add_review">Add Review</string>
+    <string name="add_offer">Add offer</string>
+    <string name="market_place">Market Place</string>
 </resources>

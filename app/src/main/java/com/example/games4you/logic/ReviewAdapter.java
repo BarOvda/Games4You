@@ -9,8 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.borjabravo.readmoretextview.ReadMoreTextView;
@@ -18,21 +17,21 @@ import com.example.games4you.R;
 
 import java.util.List;
 
-public class ReviewAdapter extends ListAdapter<Review, ReviewAdapter.ReviewViewHolder> {
-
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
     private Context mContext;
     private List<Review> mReviews;
+    FragmentManager manager;
 
-    public ReviewAdapter(@NonNull DiffUtil.ItemCallback<Review> diffCallback, Context mContext, List<Review> mReview) {
-        super(diffCallback);
+    public ReviewAdapter( Context mContext, List<Review> mReview, FragmentManager manager) {
         this.mContext = mContext;
         this.mReviews = mReview;
+        this.manager = manager;
     }
 
     @NonNull
     @Override
     public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ReviewViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.review_item,parent,false));
+        return new ReviewAdapter.ReviewViewHolder(LayoutInflater.from(mContext).inflate(R.layout.review_item, parent ,false));
     }
 
     @Override
@@ -45,12 +44,17 @@ public class ReviewAdapter extends ListAdapter<Review, ReviewAdapter.ReviewViewH
 
     }
 
+    @Override
+    public int getItemCount() {
+        return  mReviews.size();
+    }
+
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
         public CardView parentLayout;
         public TextView title;
         public TextView userName;
         public RatingBar ratingBar;
-        public ReadMoreTextView content;
+        public TextView content;
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);

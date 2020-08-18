@@ -1,7 +1,5 @@
 package com.example.games4you.logic;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 
 public class Review {
 
@@ -72,15 +70,4 @@ public class Review {
         this.user_name = user_name;
     }
 
-    public static DiffUtil.ItemCallback<Review> itemCallback = new DiffUtil.ItemCallback<Review>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull Review oldItem, @NonNull Review newItem) {
-            return oldItem.getUser_email().equals(newItem.user_email);
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Review oldItem, @NonNull Review newItem) {
-            return false;
-        }
-    };
 }

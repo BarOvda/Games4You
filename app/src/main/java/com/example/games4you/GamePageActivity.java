@@ -25,6 +25,8 @@ import com.example.games4you.logic.Game;
 import com.example.games4you.logic.GameAdapter;
 import com.example.games4you.logic.GameOffer;
 import com.example.games4you.logic.GameOfferAdapter;
+import com.example.games4you.logic.Review;
+import com.example.games4you.logic.ReviewAdapter;
 import com.example.games4you.logic.ebay_plugin.EbayDriver;
 import com.example.games4you.logic.ebay_plugin.EbayListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,6 +61,10 @@ public class GamePageActivity extends Fragment {
     private EbayDriver driver;
     private  LinearLayoutManager ebayLinearLayoutManager;
     private  LinearLayoutManager offersLinearLayoutManager;
+    private  LinearLayoutManager reviewsLinearLayoutManager;
+    private RecyclerView reviewRecycle;
+    private ReviewAdapter reviewAdapter;
+    private List<Review> mReviews;
     FirebaseFirestore db;
 
 
@@ -101,9 +107,10 @@ public class GamePageActivity extends Fragment {
         description = view.findViewById(R.id.game_description);
         name = view.findViewById(R.id.game_name);
         pic = view.findViewById(R.id.game_image);
-//        addReview = view.findViewById(R.id.add_review);
-        EbayTitleRecyclerView =  view.findViewById(R.id.ebay_recyclerview);
-        OffersRecyclerView =   view.findViewById(R.id.offers_recyclerview);
+        addReview = view.findViewById(R.id.add_review_button);
+        reviewRecycle = view.findViewById(R.id.review_recyclerview);
+        EbayTitleRecyclerView = view.findViewById(R.id.ebay_recyclerview);
+        OffersRecyclerView = view.findViewById(R.id.offers_recyclerview);
         EbayTitleRecyclerView.setHasFixedSize(true);
         OffersRecyclerView.setHasFixedSize(true);
 
@@ -117,8 +124,9 @@ public class GamePageActivity extends Fragment {
 
 
 
-         ebayLinearLayoutManager = new LinearLayoutManager(this.getContext(),LinearLayoutManager.HORIZONTAL,false);
+        ebayLinearLayoutManager = new LinearLayoutManager(this.getContext(),LinearLayoutManager.HORIZONTAL,false);
         offersLinearLayoutManager = new LinearLayoutManager(this.getContext(),LinearLayoutManager.HORIZONTAL,false);
+        reviewsLinearLayoutManager = new LinearLayoutManager(this.getContext());
         //ebay plugin Test
         driver = new EbayDriver();
         String tag = mGame.getName();
@@ -197,18 +205,6 @@ public class GamePageActivity extends Fragment {
                 });
 
 
-
-     /*   addReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("game", mGame);
-                ReviewFragment reviewFragment = new ReviewFragment();
-                reviewFragment.setArguments(bundle);
-                FragmentManager manager = getFragmentManager();
-                manager.beginTransaction().replace(R.id.fragment_container, reviewFragment).commit();
-            }
-        });*/
         view.setFocusableInTouchMode(true);
         view.requestFocus();
         view.setOnKeyListener(new View.OnKeyListener() {
@@ -220,6 +216,52 @@ public class GamePageActivity extends Fragment {
                     return true;
                 }
                 return false;
+            }
+        });
+
+
+        //============= Review Recycle View ==========================
+        reviewRecycle.setHasFixedSize(true);
+        mReviews = new ArrayList<>();
+        String consoleType = "";
+        String con = mGame.getmConsole();
+
+        if (mGame.getmConsole().equals("ps4"))
+            consoleType = "ps4_games";
+        else if (mGame.getmConsole().equals("xbox"))
+            consoleType = "xbox_one_games";
+
+        db.collection(consoleType)
+                .document(mGame.getName())
+                .collection("reviews")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Review review = document.toObject(Review.class);
+//
+                                Log.d("REVIEW TEXT", String.format("%s",review.getUser_name()));
+                                mReviews.add(review);
+                            }
+                            reviewAdapter = new ReviewAdapter( GamePageActivity.this.getContext(),mReviews, getFragmentManager());
+                            reviewRecycle.setLayoutManager(reviewsLinearLayoutManager);
+                            reviewRecycle.setAdapter(reviewAdapter);
+
+                        }
+                    }
+                });
+
+        addReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("game", mGame);
+                ReviewFragment reviewFragment = new ReviewFragment();
+                reviewFragment.setArguments(bundle);
+                FragmentManager manager = getFragmentManager();
+                manager.beginTransaction().replace(R.id.fragment_container, reviewFragment).commit();
             }
         });
 

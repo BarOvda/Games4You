@@ -103,7 +103,7 @@ public class PS4Fragment extends Fragment {
                                 game.setmDescription((String)document.get("description"));
                                 game.setmTrailer((String)document.get("trailer"));
                                 game.setmGamePlay((String)document.get("gameplay"));
-                                game.setmConsoleType((String)document.get("console"));
+                                game.setmConsole((String)document.get("console"));
                                 if(i==0)
                                     game.addCategory(Categories.HORROR);
                                 game.setmConsole("ps4_games");

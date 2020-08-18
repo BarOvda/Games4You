@@ -75,7 +75,7 @@ public class GameOfferAdapter extends RecyclerView.Adapter<GameOfferAdapter.Game
         public TextView priceView;
         public CardView parentLayout;
 
-        public GameOfferViewHolder(View itemView) {
+        public GameOfferViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.game_view_name_offer);
             imageView = itemView.findViewById(R.id.game_view_image_offer);

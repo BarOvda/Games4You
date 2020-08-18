@@ -5,38 +5,27 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.games4you.logic.Game;
-import com.example.games4you.logic.GameAdapter;
 import com.example.games4you.logic.Review;
-import com.example.games4you.logic.ebay_plugin.EbayDriver;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReviewFragment extends Fragment {
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -74,13 +63,13 @@ public class ReviewFragment extends Fragment {
 
         mGameTitle = mGame.getName();
         Picasso.get().load(mGame.getImageUrl()).into(mGamePhoto);
-        mGameConsoleType = mGame.getmConsoleType();
+        mGameConsoleType = mGame.getmConsole();
 
         mRating.setNumStars(5);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double rating = (double) mRating.getRating();
+                double rating = mRating.getRating();
                 String userEmail = currentUser.getEmail();
                 String userName = currentUser.getDisplayName();
                 Review review = new Review(mGameTitle, userEmail, rating,
@@ -116,8 +105,26 @@ public class ReviewFragment extends Fragment {
                             });
                 }
             }
-        })
-        ;
+        });
+
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("game", mGame);
+                    bundle.putString("console", mGame.getmConsole());
+                    GamePageActivity gamePageActivity = new GamePageActivity();
+                    gamePageActivity.setArguments(bundle);
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container, gamePageActivity).commit();
+
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return view;
     }

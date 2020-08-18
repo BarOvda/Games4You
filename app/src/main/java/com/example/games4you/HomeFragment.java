@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
                                 game.setmDescription((String)document.get("description"));
                                 game.setmTrailer((String)document.get("trial"));
                                 game.setmGamePlay((String)document.get("gameplay"));
-                                game.setmConsole("xbox_one_games");
+                                game.setmConsole((String)document.get("console"));
                                 mXboxOneGames.add(game);
 
                             }
@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
                                 game.setmDescription((String)document.get("description"));
                                 game.setmTrailer((String)document.get("trial"));
                                 game.setmGamePlay((String)document.get("gameplay"));
-                                game.setmConsole("ps4_games");
+                                game.setmConsole((String)document.get("console"));
                                 mPs4Games.add(game);
 
                             }
