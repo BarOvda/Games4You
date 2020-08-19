@@ -31,11 +31,13 @@ import com.example.games4you.logic.ebay_plugin.EbayDriver;
 import com.example.games4you.logic.ebay_plugin.EbayListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +48,6 @@ public class GamePageActivity extends Fragment {
 
 
     private Button btnAddOffer;
-
-
 
     private Game mGame;
     private TextView description;
@@ -65,6 +65,8 @@ public class GamePageActivity extends Fragment {
     private RecyclerView reviewRecycle;
     private ReviewAdapter reviewAdapter;
     private List<Review> mReviews;
+    //private YouTube youtube;
+    //private List<SearchResult> trailersList;
     FirebaseFirestore db;
 
 
@@ -74,7 +76,11 @@ public class GamePageActivity extends Fragment {
 
         mWebViewTrailer=(WebView)view.findViewById(R.id.videoview_trailer);
         mWebViewGamePlay=(WebView)view.findViewById(R.id.videoview_gameplay);
+        //getVideoTrailerFromYouTube();
+        //String trailerURL = trailersList.get(0).toString();
+       // Log.e("trailer",trailerURL);
         String videoStrTrailer = "<html><body>Trailer<br><iframe width=\"400\" height=\"200\" src=\"https://www.youtube.com/embed/47yJ2XCRLZs\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+
         mWebViewTrailer.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -128,13 +134,6 @@ public class GamePageActivity extends Fragment {
         offersLinearLayoutManager = new LinearLayoutManager(this.getContext(),LinearLayoutManager.HORIZONTAL,false);
         reviewsLinearLayoutManager = new LinearLayoutManager(this.getContext());
         //ebay plugin Test
-        driver = new EbayDriver();
-        String tag = mGame.getName();
-        try {
-            driver.runDriver(java.net.URLEncoder.encode(tag, "UTF-8"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 /*
 
@@ -226,12 +225,8 @@ public class GamePageActivity extends Fragment {
         String consoleType = "";
         String con = mGame.getmConsole();
 
-        if (mGame.getmConsole().equals("ps4"))
-            consoleType = "ps4_games";
-        else if (mGame.getmConsole().equals("xbox"))
-            consoleType = "xbox_one_games";
 
-        db.collection(consoleType)
+        db.collection(mGame.getmConsole())
                 .document(mGame.getName())
                 .collection("reviews")
                 .get()
@@ -264,6 +259,19 @@ public class GamePageActivity extends Fragment {
                 manager.beginTransaction().replace(R.id.fragment_container, reviewFragment).commit();
             }
         });
+        driver = new EbayDriver();
+        if(mGame.getmConsole().equals("xbox_one_games")){
+            driver.setConsole("Xbox One");
+        }else{
+            driver.setConsole("ps4_games");
+        }
+
+        String tag = mGame.getName();
+        try {
+            driver.runDriver(java.net.URLEncoder.encode(tag, "UTF-8"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return view;
     }
@@ -287,6 +295,44 @@ public class GamePageActivity extends Fragment {
     public void onResume() {
         super.onResume();
 
+    }
+
+    /*private void getVideoTrailerFromYouTube(){
+        try {
+            youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), new HttpRequestInitializer() {
+                public void initialize(HttpRequest request) throws IOException {
+                }
+            }).setApplicationName("Games4U").build();
+
+            // Define the API request for retrieving search results.
+            YouTube.Search.List search = youtube.search().list("id,snippet");
+
+            // Set your developer key from the Google Cloud Console for
+            // non-authenticated requests. See:
+            // https://cloud.google.com/console
+            search.setKey("AIzaSyAiWJdfJXRnIGtSLtsitIwE5kdAufCPmt8");
+            search.setQ("dogs");
+
+            // Restrict the search results to only include videos. See:
+            // https://developers.google.com/youtube/v3/docs/search/list#type
+            search.setType("video");
+
+            // To increase efficiency, only retrieve the fields that the
+            // application uses.
+            //search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
+            search.setMaxResults(1l);
+
+            SearchListResponse searchResponse = search.execute();
+            trailersList = searchResponse.getItems();
+
+        } catch (GoogleJsonResponseException e) {
+            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
+                    + e.getDetails().getMessage());
+        } catch (IOException e) {
+            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
+    }*/
 
 }

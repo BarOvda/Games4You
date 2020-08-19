@@ -40,7 +40,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-firestore:21.4.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation files('libs\\YouTubeAndroidPlayerApi.jar')
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -50,7 +50,6 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'com.squareup.picasso:picasso:2.71828'
-
 
 
 

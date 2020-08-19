@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameOffer implements Serializable {
-
+    private String gameName;
+    private String gameConsole;
+    private String userEmail;
     private String mTitle;
     private String mImageUrl;
     private String mDescription;
@@ -17,12 +19,16 @@ public class GameOffer implements Serializable {
 
     public GameOffer(){ }
 
-    public GameOffer(String mTitle, String mImageUrl, String mDescription, float mPrice,GeoPoint location) {
+    public GameOffer(String mTitle, String mImageUrl, String mDescription, float mPrice,GeoPoint location
+            ,String gameName,String userEmail,String gameConsole) {
         this.mTitle = mTitle;
         this.mImageUrl = mImageUrl;
         this.mDescription = mDescription;
         this.mPrice = mPrice;
         this.location = location;
+        this.userEmail = userEmail;
+        this.gameName = gameName;
+        this.gameConsole = gameConsole;
     }
 
     public String getmTitle() {
@@ -63,5 +69,29 @@ public class GameOffer implements Serializable {
 
     public void setLocation(GeoPoint location) {
         this.location = location;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getGameConsole() {
+        return gameConsole;
+    }
+
+    public void setGameConsole(String gameConsole) {
+        this.gameConsole = gameConsole;
     }
 }

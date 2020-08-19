@@ -158,13 +158,14 @@ public class UserOfferForGameFragment extends Fragment {
         }*/
         if(!isValid)
             return;;
-            float price = new Float(mPrice.getText().toString());
-            if(mImageUri==null)
-                mImageUri= Uri.parse(originalTitleImageUrl);
+        float price = new Float(mPrice.getText().toString());
+        if(mImageUri==null)
+            mImageUri= Uri.parse(originalTitleImageUrl);
         Login loginActivity = new Login();
         GameOffer offer = new GameOffer(String.valueOf(title.getText()),String.valueOf(mImageUri)
                 ,String.valueOf(description.getText())
-                ,price,new GeoPoint(loginActivity.getCurrentUserLong(),loginActivity.getCurrentUserLat()));
+                ,price,new GeoPoint(loginActivity.getCurrentUserLong(),loginActivity.getCurrentUserLat())
+                ,mGame.getmName(),currentUser.getEmail(),mGame.getmConsole());
         db.collection( mGame.getmConsole())
                 .document(mGame.getName())
                 .collection("offers")

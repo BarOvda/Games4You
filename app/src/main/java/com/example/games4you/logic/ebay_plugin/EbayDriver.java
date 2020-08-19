@@ -29,13 +29,16 @@ public class EbayDriver {
             + "{applicationId}&OPERATION-NAME={operation}&SERVICE-VERSION={version}"
             +"&RESPONSE-DATA-FORMAT=XML"
             + "&REST-PAYLOAD=true&keywords={keywords}&paginationInput.entriesPerPage={maxresults}"
+            +"&categoryId=139973"
+            +"&sortOrder=PricePlusShippingLowest"
             + "&GLOBAL-ID={globalId}&siteid=0";
     public static final String SERVICE_VERSION = "1.0.0";
-    public static final String OPERATION_NAME = "findItemsByKeywords"/*findItemsAdvanced*/;
+    public static final String OPERATION_NAME = /*"findItemsByKeywords"*/"findItemsAdvanced";
     public static final String GLOBAL_ID = "EBAY-US";
     public final static int REQUEST_DELAY = 0;
     public final static int MAX_RESULTS = 6;
     private int maxResults;
+    private String console;
     private Thread thread = new Thread(new Runnable() {
 
         @Override
@@ -56,17 +59,18 @@ public class EbayDriver {
         }
     });
     private String tag;
-      private List<EbayTitle> titles;
+    private List<EbayTitle> titles;
 
     public EbayDriver() {
         this.titles = new ArrayList<>();
         this.maxResults = MAX_RESULTS;
     }
 
-    public EbayDriver(int maxResults) {
+    public EbayDriver(int maxResults,String console) {
         this.titles = new ArrayList<>();
 
         this.maxResults = maxResults;
+        this.console = console;
     }
 
 
@@ -77,7 +81,7 @@ public class EbayDriver {
     }
 
     private String createAddress(String tag) {
-
+        tag = tag+" "+this.console;
         //substitute token
         String address = EbayDriver.EBAY_FINDING_SERVICE_URI;
         address = address.replace("{version}", EbayDriver.SERVICE_VERSION);
@@ -101,8 +105,8 @@ public class EbayDriver {
 
 
         Document doc = builder.parse(is);
-        XPathExpression ackExpression = xpath.compile("//findItemsByKeywordsResponse/ack");
-        XPathExpression itemExpression = xpath.compile("//findItemsByKeywordsResponse/searchResult/item");
+        XPathExpression ackExpression = xpath.compile("//findItemsAdvancedResponse/ack");
+        XPathExpression itemExpression = xpath.compile("//findItemsAdvancedResponse/searchResult/item");
 
         String ackToken = (String) ackExpression.evaluate(doc, XPathConstants.STRING);
         Log.d("ACK from ebay API :: ", ackToken);
@@ -139,6 +143,13 @@ public class EbayDriver {
         is.close();
 
     }
-public List<EbayTitle> getTitles(){return this.titles;}
+    public List<EbayTitle> getTitles(){return this.titles;}
 
+    public String getConsole() {
+        return console;
+    }
+
+    public void setConsole(String console) {
+        this.console = console;
+    }
 }

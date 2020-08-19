@@ -3,6 +3,7 @@ package com.example.games4you.logic;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.games4you.R;
+import com.example.games4you.UserOfferDisplayFragment;
 import com.example.games4you.logic.ebay_plugin.EbayListAdapter;
 import com.squareup.picasso.Picasso;
 
@@ -54,15 +56,18 @@ public class GameOfferAdapter extends RecyclerView.Adapter<GameOfferAdapter.Game
                 .into(holder.imageView);
         holder.priceView.setText(gameCurrent.getmPrice() + "$");
 
-        /*holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(gameCurrent.getItemUrl()));
-                mContext.startActivity(browserIntent);
 
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("game",gameCurrent);
+                UserOfferDisplayFragment fragment = new UserOfferDisplayFragment();
+                fragment.setArguments(bundle);
+                manager.beginTransaction().replace(R.id.fragment_container,fragment).commit();
             }
-        });*/
+        });
     }
 
     @Override
