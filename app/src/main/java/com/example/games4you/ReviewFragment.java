@@ -116,7 +116,7 @@ public class ReviewFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("game", mGame);
                     bundle.putString("console", mGame.getmConsole());
-                    GamePageActivity gamePageActivity = new GamePageActivity();
+                    GamePageFragment gamePageActivity = new GamePageFragment();
                     gamePageActivity.setArguments(bundle);
                     getFragmentManager().beginTransaction().replace(R.id.fragment_container, gamePageActivity).commit();
 

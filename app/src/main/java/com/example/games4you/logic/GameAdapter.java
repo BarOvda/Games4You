@@ -1,8 +1,6 @@
 package com.example.games4you.logic;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.games4you.GamePageActivity;
+import com.example.games4you.GamePageFragment;
 import com.example.games4you.R;
 import com.squareup.picasso.Picasso;
 
@@ -62,7 +60,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("game",mGames.get(position));
                 bundle.putString("console",mGames.get(position).getmConsole());
-                GamePageActivity gamePageActivity = new GamePageActivity();
+                GamePageFragment gamePageActivity = new GamePageFragment();
                 gamePageActivity.setArguments(bundle);
                 manager.beginTransaction().replace(R.id.fragment_container,gamePageActivity).commit();
 

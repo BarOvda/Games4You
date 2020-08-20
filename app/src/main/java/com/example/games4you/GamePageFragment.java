@@ -1,15 +1,19 @@
 package com.example.games4you;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,12 +21,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.games4you.logic.Game;
-import com.example.games4you.logic.GameAdapter;
 import com.example.games4you.logic.GameOffer;
 import com.example.games4you.logic.GameOfferAdapter;
 import com.example.games4you.logic.Review;
@@ -33,24 +35,17 @@ import com.example.games4you.logic.ebay_plugin.EbayListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GamePageActivity extends Fragment {
+public class GamePageFragment extends Fragment {
 
     private WebView mWebViewTrailer;
     private WebView mWebViewGamePlay;
@@ -81,7 +76,7 @@ public class GamePageActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_game_page, container, false);
+        View view = inflater.inflate(R.layout.fragment_game_page, container, false);
 
         trailersList = new ArrayList<>();
 
@@ -92,6 +87,8 @@ public class GamePageActivity extends Fragment {
         //String trailerURL = trailersList.get(0).toString();
         //Log.e("trailer",trailerURL);
 
+        mWebViewTrailer.setWebChromeClient(new ChromeClient());
+        mWebViewGamePlay.setWebChromeClient(new ChromeClient());
 
         btnAddOffer = view.findViewById(R.id.add_offer_button);
         db= FirebaseFirestore.getInstance();
@@ -123,7 +120,7 @@ public class GamePageActivity extends Fragment {
         while (!youtubeSearchAPI.isReady());
         List<String> trailersIDs = youtubeSearchAPI.getVideoId();
         Log.e("VideoId",trailersIDs.get(0));
-        String videoStrTrailer = "<html><body>Trailer<br><iframe width=\"400\" height=\"200\" src=\"https://www.youtube.com/embed/"+trailersIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        String videoStrTrailer = "<html><body>Trailer<br><iframe width=\"300\" height=\"200\" src=\"https://www.youtube.com/embed/"+trailersIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
 
         mWebViewTrailer.setWebViewClient(new WebViewClient() {
             @Override
@@ -131,6 +128,7 @@ public class GamePageActivity extends Fragment {
                 return false;
             }
         });
+
         WebSettings ws = mWebViewTrailer.getSettings();
         ws.setJavaScriptEnabled(true);
         mWebViewTrailer.loadData(videoStrTrailer, "text/html", "utf-8");
@@ -140,7 +138,7 @@ public class GamePageActivity extends Fragment {
         while (!youtubeSearchAPIForGamplay.isReady());
         List<String> gameplayssIDs = youtubeSearchAPIForGamplay.getVideoId();
 
-        String videoStringGamePlay = "<html><body>Game Play<br><iframe width=\"400\" height=\"200\" src=\"https://www.youtube.com/embed/"+gameplayssIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        String videoStringGamePlay = "<html><body>Game Play<br><iframe width=\"300\" height=\"200\" src=\"https://www.youtube.com/embed/"+gameplayssIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
 
         mWebViewGamePlay.setWebViewClient(new WebViewClient() {
             @Override
@@ -223,7 +221,7 @@ public class GamePageActivity extends Fragment {
 
                             }
                             GameOfferAdapter mGameAdapter = new GameOfferAdapter(
-                                    GamePageActivity.this.getContext(),offers,getFragmentManager());
+                                    GamePageFragment.this.getContext(),offers,getFragmentManager());
                             OffersRecyclerView.setLayoutManager(offersLinearLayoutManager);
                             OffersRecyclerView.setAdapter(mGameAdapter);
                         }
@@ -267,7 +265,7 @@ public class GamePageActivity extends Fragment {
                                 Log.d("REVIEW TEXT", String.format("%s",review.getUser_name()));
                                 mReviews.add(review);
                             }
-                            reviewAdapter = new ReviewAdapter( GamePageActivity.this.getContext(),mReviews, getFragmentManager());
+                            reviewAdapter = new ReviewAdapter( GamePageFragment.this.getContext(),mReviews, getFragmentManager());
                             reviewRecycle.setLayoutManager(reviewsLinearLayoutManager);
                             reviewRecycle.setAdapter(reviewAdapter);
 
@@ -306,7 +304,7 @@ public class GamePageActivity extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         while(driver.getTitles().size()<1);
 
-        EbayListAdapter = new EbayListAdapter(GamePageActivity.this.getContext(),driver.getTitles(),getFragmentManager());
+        EbayListAdapter = new EbayListAdapter(GamePageFragment.this.getContext(),driver.getTitles(),getFragmentManager());
         EbayTitleRecyclerView.setLayoutManager(ebayLinearLayoutManager);
         EbayTitleRecyclerView.setAdapter(EbayListAdapter);
 
@@ -324,6 +322,47 @@ public class GamePageActivity extends Fragment {
 
     }
 
+    private class ChromeClient extends WebChromeClient {
+        private View mCustomView;
+        private WebChromeClient.CustomViewCallback mCustomViewCallback;
+        protected FrameLayout mFullscreenContainer;
+        private int mOriginalOrientation;
+        private int mOriginalSystemUiVisibility;
 
+        ChromeClient() {}
+
+        public Bitmap getDefaultVideoPoster()
+        {
+            if (mCustomView == null) {
+                return null;
+            }
+            return BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(), 2130837573);
+        }
+
+        public void onHideCustomView()
+        {
+            ((FrameLayout)getActivity().getWindow().getDecorView()).removeView(this.mCustomView);
+            this.mCustomView = null;
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(this.mOriginalSystemUiVisibility);
+            getActivity().setRequestedOrientation(this.mOriginalOrientation);
+            this.mCustomViewCallback.onCustomViewHidden();
+            this.mCustomViewCallback = null;
+        }
+
+        public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback paramCustomViewCallback)
+        {
+            if (this.mCustomView != null)
+            {
+                onHideCustomView();
+                return;
+            }
+            this.mCustomView = paramView;
+            this.mOriginalSystemUiVisibility = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+            this.mOriginalOrientation = getActivity().getRequestedOrientation();
+            this.mCustomViewCallback = paramCustomViewCallback;
+            ((FrameLayout)getActivity().getWindow().getDecorView()).addView(this.mCustomView, new FrameLayout.LayoutParams(-1, -1));
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(3846 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        }
+    }
 
 }

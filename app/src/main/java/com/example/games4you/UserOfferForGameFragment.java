@@ -16,14 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.games4you.logic.Game;
 import com.example.games4you.logic.GameOffer;
-import com.example.games4you.logic.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -34,8 +31,6 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
-
-import java.net.URI;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -114,7 +109,7 @@ public class UserOfferForGameFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("game",mGame);
                     bundle.putString("console",mGame.getmConsole());
-                    GamePageActivity gamePageActivity = new GamePageActivity();
+                    GamePageFragment gamePageActivity = new GamePageFragment();
                     gamePageActivity.setArguments(bundle);
                     getFragmentManager().beginTransaction().replace(R.id.fragment_container,gamePageActivity).commit();
 
