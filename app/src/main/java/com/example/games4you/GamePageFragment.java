@@ -50,6 +50,9 @@ public class GamePageFragment extends Fragment {
     private WebView mWebViewTrailer;
     private WebView mWebViewGamePlay;
 
+    private IProcess mProcess;
+    private IProcess mYouTubeTrailerProcess;
+    private IProcess mYouTubeGamePlayProcess;
 
     private Button btnAddOffer;
 
@@ -72,6 +75,8 @@ public class GamePageFragment extends Fragment {
     private YouTube youtube;
     private List<SearchResult> trailersList;
     FirebaseFirestore db;
+    private YoutubeSearchAPI youtubeSearchAPIForGamplay;
+    private YoutubeSearchAPI youtubeSearchAPI;
 
 
     @Override
@@ -109,56 +114,95 @@ public class GamePageFragment extends Fragment {
         name.setText(mGame.getName());
         Picasso.get().load(mGame.getImageUrl()).into(pic);
         description.setText(mGame.getmDescription());
-        //====================================================================
-
-
-
-
-
-        YoutubeSearchAPI youtubeSearchAPI= new YoutubeSearchAPI(mGame.getName()+" trailer");
-        youtubeSearchAPI.execute();
-        while (!youtubeSearchAPI.isReady());
-        List<String> trailersIDs = youtubeSearchAPI.getVideoId();
-        Log.e("VideoId",trailersIDs.get(0));
-        String videoStrTrailer = "<html><body>Trailer<br><iframe width=\"300\" height=\"200\" src=\"https://www.youtube.com/embed/"+trailersIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-
-        mWebViewTrailer.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-        });
-
-        WebSettings ws = mWebViewTrailer.getSettings();
-        ws.setJavaScriptEnabled(true);
-        mWebViewTrailer.loadData(videoStrTrailer, "text/html", "utf-8");
-        YoutubeSearchAPI youtubeSearchAPIForGamplay= new YoutubeSearchAPI(mGame.getName()+" gameplay");
-
-        youtubeSearchAPIForGamplay.execute();
-        while (!youtubeSearchAPIForGamplay.isReady());
-        List<String> gameplayssIDs = youtubeSearchAPIForGamplay.getVideoId();
-
-        String videoStringGamePlay = "<html><body>Game Play<br><iframe width=\"300\" height=\"200\" src=\"https://www.youtube.com/embed/"+gameplayssIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-
-        mWebViewGamePlay.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-        });
-        WebSettings ws1 = mWebViewGamePlay.getSettings();
-        ws1.setJavaScriptEnabled(true);
-        mWebViewGamePlay.loadData(videoStringGamePlay, "text/html", "utf-8");
-
-
-
-
-
-
+        //==================================================================== Ebay
         ebayLinearLayoutManager = new LinearLayoutManager(this.getContext(),LinearLayoutManager.HORIZONTAL,false);
         offersLinearLayoutManager = new LinearLayoutManager(this.getContext(),LinearLayoutManager.HORIZONTAL,false);
         reviewsLinearLayoutManager = new LinearLayoutManager(this.getContext());
-        //ebay plugin Test
+        mProcess = new IProcess() {
+            @Override
+            public void updateAdapter() {
+
+                EbayListAdapter.notifyDataSetChanged();
+
+            }
+        };
+
+        String tag = mGame.getName();
+        driver = new EbayDriver(tag,mProcess,mGame.getmConsole());
+
+        try {
+            driver.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        EbayListAdapter = new EbayListAdapter(GamePageFragment.this.getContext(),driver.getTitles(),getFragmentManager());
+        EbayTitleRecyclerView.setLayoutManager(ebayLinearLayoutManager);
+        EbayTitleRecyclerView.setAdapter(EbayListAdapter);
+
+
+//----------------- YouTube
+
+        mYouTubeTrailerProcess = new IProcess() {
+            @Override
+            public void updateAdapter() {
+
+                List<String> trailersIDs = youtubeSearchAPI.getVideoId();
+                Log.e("VideoId",trailersIDs.get(0));
+                String videoStrTrailer = "<html><body>Trailer<br><iframe width=\"300\" height=\"200\" src=\"https://www.youtube.com/embed/"+trailersIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+                WebSettings ws = mWebViewTrailer.getSettings();
+                ws.setJavaScriptEnabled(true);
+                mWebViewTrailer.loadData(videoStrTrailer, "text/html", "utf-8");
+                mWebViewTrailer.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        return false;
+                    }
+                });
+                mWebViewGamePlay.reload();
+            }
+        };
+         youtubeSearchAPI = new YoutubeSearchAPI(mGame.getName() + " trailer",mYouTubeTrailerProcess);
+        youtubeSearchAPI.execute();
+
+
+
+
+
+
+
+
+        mYouTubeGamePlayProcess = new IProcess() {
+            @Override
+            public void updateAdapter() {
+
+
+                List<String> gameplayssIDs = youtubeSearchAPIForGamplay.getVideoId();
+
+                String videoStringGamePlay = "<html><body>Game Play<br><iframe width=\"300\" height=\"200\" src=\"https://www.youtube.com/embed/" + gameplayssIDs.get(0) + "\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+
+                mWebViewGamePlay.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        return false;
+                    }
+                });
+                WebSettings ws1 = mWebViewGamePlay.getSettings();
+                ws1.setJavaScriptEnabled(true);
+                mWebViewGamePlay.loadData(videoStringGamePlay, "text/html", "utf-8");
+
+            }
+        };
+
+
+        youtubeSearchAPIForGamplay = new YoutubeSearchAPI(mGame.getName() + " gameplay",mYouTubeGamePlayProcess);
+
+        youtubeSearchAPIForGamplay.execute();
+
+
+
+
+
+//==============================================
 
 /*
 
@@ -284,29 +328,12 @@ public class GamePageFragment extends Fragment {
                 manager.beginTransaction().replace(R.id.fragment_container, reviewFragment).commit();
             }
         });
-        driver = new EbayDriver();
-        if(mGame.getmConsole().equals("xbox_one_games")){
-            driver.setConsole("xbox_one_games");
-        }else{
-            driver.setConsole("ps4_games");
-        }
 
-        String tag = mGame.getName();
-        try {
-            driver.runDriver(java.net.URLEncoder.encode(tag, "UTF-8"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         return view;
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        while(driver.getTitles().size()<1);
-
-        EbayListAdapter = new EbayListAdapter(GamePageFragment.this.getContext(),driver.getTitles(),getFragmentManager());
-        EbayTitleRecyclerView.setLayoutManager(ebayLinearLayoutManager);
-        EbayTitleRecyclerView.setAdapter(EbayListAdapter);
 
 
     }
@@ -364,5 +391,8 @@ public class GamePageFragment extends Fragment {
             getActivity().getWindow().getDecorView().setSystemUiVisibility(3846 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
     }
+    public interface IProcess {
 
+        void updateAdapter();
+    }
 }

@@ -1,7 +1,11 @@
 package com.example.games4you.logic.ebay_plugin;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.games4you.GamePageFragment;
 import com.example.games4you.logic.EbayTitle;
 
 import org.w3c.dom.Document;
@@ -20,7 +24,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
-public class EbayDriver {
+public class EbayDriver extends AsyncTask<Void, Void, Void> {
 
 
     public final static String EBAY_APP_ID = "BarOvda-Games4Yo-PRD-9c8ec878c-ae291bb6";
@@ -39,25 +43,8 @@ public class EbayDriver {
     public final static int MAX_RESULTS = 6;
     private int maxResults;
     private String console;
-    private Thread thread = new Thread(new Runnable() {
+    private GamePageFragment.IProcess mProcess;
 
-        @Override
-        public void run() {
-            try  {
-
-                String address = createAddress(tag);
-                Log.d("sending request to :: ", address);
-                String response = URLReader.read(address);
-                Log.d("response :: ", response);
-                //process xml dump returned from EBAY
-                processResponse(response);
-                //Honor rate limits - wait between results
-                Thread.sleep(REQUEST_DELAY);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    });
     private String tag;
     private List<EbayTitle> titles;
 
@@ -65,7 +52,36 @@ public class EbayDriver {
         this.titles = new ArrayList<>();
         this.maxResults = MAX_RESULTS;
     }
+    public EbayDriver(String tag, GamePageFragment.IProcess mProcess,String console) {
+        this.titles = new ArrayList<>();
+        this.maxResults = MAX_RESULTS;
+        this.tag = tag;
+        this.mProcess = mProcess;
+        this.console = console;
+    }
+    @Override
+    protected Void doInBackground(Void... voids) {
+        try  {
 
+            String address = createAddress(tag);
+            Log.d("sending request to :: ", address);
+            String response = URLReader.read(address);
+            Log.d("response :: ", response);
+            //process xml dump returned from EBAY
+            processResponse(response);
+            //Honor rate limits - wait between results
+            Thread.sleep(REQUEST_DELAY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }        return null;
+    }
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        //Do All UI Changes HERE
+        super.onPostExecute(aVoid);
+        mProcess.updateAdapter();
+
+    }
     public EbayDriver(int maxResults,String console) {
         this.titles = new ArrayList<>();
 
@@ -76,8 +92,7 @@ public class EbayDriver {
 
     public void runDriver(String tag) {
         this.tag = tag;
-        thread.start();
-
+        this.execute();
     }
 
     private String createAddress(String tag) {
@@ -152,4 +167,5 @@ public class EbayDriver {
     public void setConsole(String console) {
         this.console = console;
     }
+
 }

@@ -3,6 +3,7 @@ package com.example.games4you.logic.YouTubeAPI;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.games4you.GamePageFragment;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -22,9 +23,10 @@ public class YoutubeSearchAPI extends AsyncTask<Void, Void, Void> {
     private  List<SearchResult> searchResultList;
     private boolean isReady;
     private String keywords;
-
-    public YoutubeSearchAPI(String keywords) {
+    private GamePageFragment.IProcess mProcess;
+    public YoutubeSearchAPI(String keywords, GamePageFragment.IProcess mProcess) {
         this.keywords = keywords;
+        this.mProcess=mProcess;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class YoutubeSearchAPI extends AsyncTask<Void, Void, Void> {
             }).setApplicationName("VideoStoreAdmin").build();
             searchResultList = new ArrayList<>();
             YouTube.Search.List search = youtube.search().list("id,snippet");
-            search.setKey("AIzaSyCANDvFHhg9_thUARCe3z1aPLqGoObwlqE");
+            search.setKey("AIzaSyDiNRYj7ChvYb0h19C9IEAOc15UrO7Fkg4");
             search.setQ(keywords);
             search.setType("video");
             search.setMaxResults(1l);
@@ -68,7 +70,7 @@ public class YoutubeSearchAPI extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         //Do All UI Changes HERE
         super.onPostExecute(aVoid);
-
+        mProcess.updateAdapter();
     }
     public List<String> getVideoId()
 

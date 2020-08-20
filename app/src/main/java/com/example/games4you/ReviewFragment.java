@@ -75,7 +75,7 @@ public class ReviewFragment extends Fragment {
                 Review review = new Review(mGameTitle, userEmail, rating,
                         mReview.getText().toString(), mReviewTitle.getText().toString(), userName);
                 setFragmentVisabilty();
-                if (mGameConsoleType.equals("ps4")) {
+                if (mGameConsoleType.equals("ps4_games")) {
                     db.collection("ps4_games")
                             .document(mGameTitle)
                             .collection("reviews")

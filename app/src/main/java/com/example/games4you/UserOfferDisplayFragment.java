@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.games4you.logic.Game;
 import com.example.games4you.logic.GameOffer;
 import com.example.games4you.logic.GameOfferAdapter;
+import com.example.games4you.logic.Review;
 import com.example.games4you.logic.User;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,7 +37,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,9 +80,7 @@ public class UserOfferDisplayFragment extends Fragment implements OnMapReadyCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_offer_display, container, false);
-        mGame = (GameOffer) getArguments().getSerializable("game");
 
-        db = FirebaseFirestore.getInstance();
 
 
 
@@ -90,7 +91,9 @@ public class UserOfferDisplayFragment extends Fragment implements OnMapReadyCall
         userPic =  view.findViewById(R.id.user_photo);
         mPrice = view.findViewById(R.id.price_text_view);
 
+        db = FirebaseFirestore.getInstance();
 
+        mGame = (GameOffer) getArguments().getSerializable("game");
 
 
         db.collection( mGame.getGameConsole())
@@ -101,8 +104,10 @@ public class UserOfferDisplayFragment extends Fragment implements OnMapReadyCall
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
+                        Log.e("firebasecheck","test");
 
+                        if (task.isSuccessful()) {
+                            Log.e("firebasecheck","test");
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 mGame = document.toObject(GameOffer.class);
@@ -110,8 +115,17 @@ public class UserOfferDisplayFragment extends Fragment implements OnMapReadyCall
                             }
 
                         }
-                    }});
-        userDetailes = new User();
+                    }}).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("the failur",e.getMessage());
+            }
+        }).addOnCanceledListener(new OnCanceledListener() {
+            @Override
+            public void onCanceled() {
+                Log.e("is canseld","test");
+            }
+        });
         db.collection( "users")
                 .document(mGame.getUserEmail())
                 .get()
@@ -127,8 +141,9 @@ public class UserOfferDisplayFragment extends Fragment implements OnMapReadyCall
                     }
                 });
 
+
         title.setText(mGame.getmTitle());
-        mPrice.setText(mGame.getmPrice()+"");
+        mPrice.setText(mGame.getmPrice()+"$");
         description.setText(mGame.getmDescription());
         Picasso.get().load(mGame.getmImageUrl()).into(offerPic);
 
