@@ -27,11 +27,20 @@ import com.example.games4you.logic.GameOffer;
 import com.example.games4you.logic.GameOfferAdapter;
 import com.example.games4you.logic.Review;
 import com.example.games4you.logic.ReviewAdapter;
+import com.example.games4you.logic.YouTubeAPI.YoutubeSearchAPI;
 import com.example.games4you.logic.ebay_plugin.EbayDriver;
 import com.example.games4you.logic.ebay_plugin.EbayListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.SearchListResponse;
+import com.google.api.services.youtube.model.SearchResult;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -65,8 +74,8 @@ public class GamePageActivity extends Fragment {
     private RecyclerView reviewRecycle;
     private ReviewAdapter reviewAdapter;
     private List<Review> mReviews;
-    //private YouTube youtube;
-    //private List<SearchResult> trailersList;
+    private YouTube youtube;
+    private List<SearchResult> trailersList;
     FirebaseFirestore db;
 
 
@@ -74,37 +83,14 @@ public class GamePageActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_game_page, container, false);
 
+        trailersList = new ArrayList<>();
+
         mWebViewTrailer=(WebView)view.findViewById(R.id.videoview_trailer);
         mWebViewGamePlay=(WebView)view.findViewById(R.id.videoview_gameplay);
-        //getVideoTrailerFromYouTube();
+    //    getVideoTrailerFromYouTube();
+
         //String trailerURL = trailersList.get(0).toString();
-       // Log.e("trailer",trailerURL);
-        String videoStrTrailer = "<html><body>Trailer<br><iframe width=\"400\" height=\"200\" src=\"https://www.youtube.com/embed/47yJ2XCRLZs\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-
-        mWebViewTrailer.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-        });
-        WebSettings ws = mWebViewTrailer.getSettings();
-        ws.setJavaScriptEnabled(true);
-        mWebViewTrailer.loadData(videoStrTrailer, "text/html", "utf-8");
-
-
-        String videoStringGamePlay = "<html><body>Game Play<br><iframe width=\"400\" height=\"200\" src=\"https://www.youtube.com/embed/47yJ2XCRLZs\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-        mWebViewGamePlay.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-        });
-        WebSettings ws1 = mWebViewGamePlay.getSettings();
-        ws1.setJavaScriptEnabled(true);
-        mWebViewGamePlay.loadData(videoStringGamePlay, "text/html", "utf-8");
-
-
-
+        //Log.e("trailer",trailerURL);
 
 
         btnAddOffer = view.findViewById(R.id.add_offer_button);
@@ -127,6 +113,47 @@ public class GamePageActivity extends Fragment {
         Picasso.get().load(mGame.getImageUrl()).into(pic);
         description.setText(mGame.getmDescription());
         //====================================================================
+
+
+
+
+
+        YoutubeSearchAPI youtubeSearchAPI= new YoutubeSearchAPI(mGame.getName()+" trailer");
+        youtubeSearchAPI.execute();
+        while (!youtubeSearchAPI.isReady());
+        List<String> trailersIDs = youtubeSearchAPI.getVideoId();
+        Log.e("VideoId",trailersIDs.get(0));
+        String videoStrTrailer = "<html><body>Trailer<br><iframe width=\"400\" height=\"200\" src=\"https://www.youtube.com/embed/"+trailersIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+
+        mWebViewTrailer.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+        });
+        WebSettings ws = mWebViewTrailer.getSettings();
+        ws.setJavaScriptEnabled(true);
+        mWebViewTrailer.loadData(videoStrTrailer, "text/html", "utf-8");
+        YoutubeSearchAPI youtubeSearchAPIForGamplay= new YoutubeSearchAPI(mGame.getName()+" gameplay");
+
+        youtubeSearchAPIForGamplay.execute();
+        while (!youtubeSearchAPIForGamplay.isReady());
+        List<String> gameplayssIDs = youtubeSearchAPIForGamplay.getVideoId();
+
+        String videoStringGamePlay = "<html><body>Game Play<br><iframe width=\"400\" height=\"200\" src=\"https://www.youtube.com/embed/"+gameplayssIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+
+        mWebViewGamePlay.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+        });
+        WebSettings ws1 = mWebViewGamePlay.getSettings();
+        ws1.setJavaScriptEnabled(true);
+        mWebViewGamePlay.loadData(videoStringGamePlay, "text/html", "utf-8");
+
+
+
 
 
 
@@ -261,7 +288,7 @@ public class GamePageActivity extends Fragment {
         });
         driver = new EbayDriver();
         if(mGame.getmConsole().equals("xbox_one_games")){
-            driver.setConsole("Xbox One");
+            driver.setConsole("xbox_one_games");
         }else{
             driver.setConsole("ps4_games");
         }
@@ -297,42 +324,6 @@ public class GamePageActivity extends Fragment {
 
     }
 
-    /*private void getVideoTrailerFromYouTube(){
-        try {
-            youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), new HttpRequestInitializer() {
-                public void initialize(HttpRequest request) throws IOException {
-                }
-            }).setApplicationName("Games4U").build();
 
-            // Define the API request for retrieving search results.
-            YouTube.Search.List search = youtube.search().list("id,snippet");
-
-            // Set your developer key from the Google Cloud Console for
-            // non-authenticated requests. See:
-            // https://cloud.google.com/console
-            search.setKey("AIzaSyAiWJdfJXRnIGtSLtsitIwE5kdAufCPmt8");
-            search.setQ("dogs");
-
-            // Restrict the search results to only include videos. See:
-            // https://developers.google.com/youtube/v3/docs/search/list#type
-            search.setType("video");
-
-            // To increase efficiency, only retrieve the fields that the
-            // application uses.
-            //search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
-            search.setMaxResults(1l);
-
-            SearchListResponse searchResponse = search.execute();
-            trailersList = searchResponse.getItems();
-
-        } catch (GoogleJsonResponseException e) {
-            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
-                    + e.getDetails().getMessage());
-        } catch (IOException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }*/
 
 }

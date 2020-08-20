@@ -24,8 +24,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-}
 
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+    }
+}
+repositories {
+    mavenCentral()
+}
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -36,6 +51,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.1.1'
 
     implementation 'com.android.support:multidex:1.0.3'
+
+
 
 
     implementation 'com.google.firebase:firebase-firestore:21.4.3'
@@ -62,4 +79,13 @@ dependencies {
     implementation 'com.borjabravo:readmoretextview:2.0.1'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.karumi:dexter:5.0.0'
+
+
+
+
+    compile 'com.google.apis:google-api-services-youtube:v3-rev183-1.22.0'
+
+    compile 'com.google.http-client:google-http-client-android:+'
+    compile 'com.google.api-client:google-api-client-android:+'
+    compile 'com.google.api-client:google-api-client-gson:+'
 }
