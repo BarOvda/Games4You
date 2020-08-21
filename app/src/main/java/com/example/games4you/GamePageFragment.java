@@ -57,6 +57,9 @@ public class GamePageFragment extends Fragment {
 
     private Button btnAddOffer;
 
+    private ImageView scrolledImage;
+    private ImageView menuImage;
+
     private Game mGame;
     private TextView description;
     private TextView name;
@@ -100,22 +103,23 @@ public class GamePageFragment extends Fragment {
 
         btnAddOffer = view.findViewById(R.id.add_offer_button);
         db= FirebaseFirestore.getInstance();
-
+        menuImage= view.findViewById(R.id.game_image_menu);
         description = view.findViewById(R.id.game_description);
-        name = view.findViewById(R.id.game_name);
-        pic = view.findViewById(R.id.game_image);
+        pic = view.findViewById(R.id.game_image_menu);
         addReview = view.findViewById(R.id.add_review_button);
         reviewRecycle = view.findViewById(R.id.review_recyclerview);
         EbayTitleRecyclerView = view.findViewById(R.id.ebay_recyclerview);
         OffersRecyclerView = view.findViewById(R.id.offers_recyclerview);
+        scrolledImage = view.findViewById(R.id.profile_avatar);
         EbayTitleRecyclerView.setHasFixedSize(true);
         OffersRecyclerView.setHasFixedSize(true);
 
         //============ get game from other activity\fragment ================
         mGame = (Game) getArguments().getSerializable("game");
         Log.e("GAME", "name: " + mGame.getName() + " des: " + mGame.getmDescription());
-        name.setText(mGame.getName());
         Picasso.get().load(mGame.getImageUrl()).into(pic);
+        Picasso.get().load(mGame.getImageUrl()).into(scrolledImage);
+
         description.setText(mGame.getmDescription());
         //==================================================================== Ebay
         ebayLinearLayoutManager = new LinearLayoutManager(this.getContext(),LinearLayoutManager.HORIZONTAL,false);
