@@ -3,7 +3,6 @@ package com.example.games4you.logic.ebay_plugin;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +11,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.games4you.GamePageActivity;
 import com.example.games4you.R;
 import com.example.games4you.logic.EbayTitle;
-import com.example.games4you.logic.Game;
-import com.example.games4you.logic.GameAdapter;
 import com.squareup.picasso.Picasso;
 
 import androidx.recyclerview.widget.RecyclerView;

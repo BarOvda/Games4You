@@ -25,6 +25,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
             android:id="@+id/game_name"
             android:layout_width="match_parent"
@@ -35,24 +36,44 @@
             android:textSize="30dp"
             app:layout_constraintBottom_toTopOf="@+id/game_image"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <ImageView
             android:id="@+id/game_image"
             android:layout_width="300dp"
             android:layout_height="381dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:contentDescription="@string/game_image"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toTopOf="@+id/game_description_txt"
+            app:layout_constraintBottom_toTopOf="@+id/game_rating_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/game_name"
             tools:srcCompat="@tools:sample/avatars" />
+
+        <RatingBar
+            android:id="@+id/game_rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            app:layout_constraintBottom_toTopOf="@+id/game_description_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/game_image">
+
+        </RatingBar>
 
         <TextView
             android:id="@+id/game_description_txt"
@@ -65,7 +86,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.104"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/game_image" />
+            app:layout_constraintTop_toBottomOf="@+id/game_rating_bar" />
 
         <com.borjabravo.readmoretextview.ReadMoreTextView
             android:id="@+id/game_description"
@@ -212,6 +233,21 @@
             app:layout_constraintTop_toBottomOf="@+id/add_offer_button" />
 
         <Button
+            android:id="@+id/see_all_reviews_button"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/buttonshape"
+            android:gravity="center"
+            android:text="@string/see_all_reviews"
+            app:layout_constraintBottom_toTopOf="@id/add_review_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/review_recyclerview">
+
+        </Button>
+
+        <Button
             android:id="@+id/add_review_button"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -224,7 +260,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/review_recyclerview">
+            app:layout_constraintTop_toBottomOf="@id/see_all_reviews_button">
 
         </Button>
     </androidx.constraintlayout.widget.ConstraintLayout>

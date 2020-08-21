@@ -1,8 +1,6 @@
-package com.example.games4you.logic;
+package com.example.games4you.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.games4you.GamePageActivity;
 import com.example.games4you.R;
+import com.example.games4you.logic.Categories;
+import com.example.games4you.logic.Game;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toolbar;
 
 
 import androidx.annotation.NonNull;
@@ -25,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.games4you.logic.Categories;
 import com.example.games4you.logic.Game;
-import com.example.games4you.logic.GameAdapter;
+import com.example.games4you.adapters.GameAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 import com.google.android.gms.tasks.Task;

@@ -59,7 +59,7 @@ public class UserOfferForGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_offer_for_game,container,false);
 
-        db= FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         btnUpload = view.findViewById(R.id.upload_offer);
         description = view.findViewById(R.id.description_text);
         title = view.findViewById(R.id.title_text);

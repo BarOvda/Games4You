@@ -1,8 +1,6 @@
-package com.example.games4you.logic;
+package com.example.games4you.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.games4you.R;
-import com.example.games4you.logic.ebay_plugin.EbayListAdapter;
+import com.example.games4you.logic.GameOffer;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.games4you.logic;
+package com.example.games4you.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,8 +12,8 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.example.games4you.R;
+import com.example.games4you.logic.Review;
 
 import java.util.List;
 

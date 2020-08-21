@@ -11,22 +11,21 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.games4you.logic.Game;
-import com.example.games4you.logic.GameAdapter;
 import com.example.games4you.logic.GameOffer;
-import com.example.games4you.logic.GameOfferAdapter;
+import com.example.games4you.adapters.GameOfferAdapter;
 import com.example.games4you.logic.Review;
-import com.example.games4you.logic.ReviewAdapter;
+import com.example.games4you.adapters.ReviewAdapter;
 import com.example.games4you.logic.ebay_plugin.EbayDriver;
 import com.example.games4you.logic.ebay_plugin.EbayListAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -54,8 +53,10 @@ public class GamePageActivity extends Fragment {
     private TextView name;
     private ImageView pic;
     private TextView addReview;
+    private RatingBar totalGameRating;
     private RecyclerView EbayTitleRecyclerView;
     private RecyclerView OffersRecyclerView;
+    private Button seeAllReviews;
 
     private EbayListAdapter EbayListAdapter;
     private EbayDriver driver;
@@ -100,10 +101,10 @@ public class GamePageActivity extends Fragment {
 
 
 
-
+        seeAllReviews = view.findViewById(R.id.see_all_reviews_button);
         btnAddOffer = view.findViewById(R.id.add_offer_button);
         db= FirebaseFirestore.getInstance();
-
+        totalGameRating = view.findViewById(R.id.game_rating_bar);
         description = view.findViewById(R.id.game_description);
         name = view.findViewById(R.id.game_name);
         pic = view.findViewById(R.id.game_image);
@@ -226,9 +227,9 @@ public class GamePageActivity extends Fragment {
         String consoleType = "";
         String con = mGame.getmConsole();
 
-        if (mGame.getmConsole().equals("ps4"))
+        if (con.equals("ps4"))
             consoleType = "ps4_games";
-        else if (mGame.getmConsole().equals("xbox"))
+        else if (con.equals("xbox"))
             consoleType = "xbox_one_games";
 
         db.collection(consoleType)
@@ -245,7 +246,8 @@ public class GamePageActivity extends Fragment {
                                 Log.d("REVIEW TEXT", String.format("%s",review.getUser_name()));
                                 mReviews.add(review);
                             }
-                            reviewAdapter = new ReviewAdapter( GamePageActivity.this.getContext(),mReviews, getFragmentManager());
+                            totalGameRating.setRating(calculateRating(mReviews));
+                            reviewAdapter = new ReviewAdapter( GamePageActivity.this.getContext(),mReviews.subList(0,1), getFragmentManager());
                             reviewRecycle.setLayoutManager(reviewsLinearLayoutManager);
                             reviewRecycle.setAdapter(reviewAdapter);
 
@@ -265,6 +267,18 @@ public class GamePageActivity extends Fragment {
             }
         });
 
+        seeAllReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("game", mGame);
+                DisplayReviewFragment displayReviewFragment = new DisplayReviewFragment();
+                displayReviewFragment.setArguments(bundle);
+                FragmentManager manager = getFragmentManager();
+                manager.beginTransaction().replace(R.id.fragment_container, displayReviewFragment).commit();
+            }
+        });
+
         return view;
     }
     @Override
@@ -274,7 +288,6 @@ public class GamePageActivity extends Fragment {
         EbayListAdapter = new EbayListAdapter(GamePageActivity.this.getContext(),driver.getTitles(),getFragmentManager());
         EbayTitleRecyclerView.setLayoutManager(ebayLinearLayoutManager);
         EbayTitleRecyclerView.setAdapter(EbayListAdapter);
-
 
     }
 
@@ -289,4 +302,14 @@ public class GamePageActivity extends Fragment {
 
         }
 
+    private float calculateRating(List<Review> mReviews){
+        float totalRating = 0;
+
+        for (int i = 0; i< mReviews.size(); i++){
+            totalRating += mReviews.get(i).getRating();
+        }
+        totalRating = totalRating / mReviews.size();
+
+        return totalRating;
+        }
 }
