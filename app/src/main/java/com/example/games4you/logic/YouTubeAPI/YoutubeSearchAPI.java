@@ -40,7 +40,7 @@ public class YoutubeSearchAPI extends AsyncTask<Void, Void, Void> {
             }).setApplicationName("VideoStoreAdmin").build();
             searchResultList = new ArrayList<>();
             YouTube.Search.List search = youtube.search().list("id,snippet");
-            search.setKey("AIzaSyDiNRYj7ChvYb0h19C9IEAOc15UrO7Fkg4");
+            search.setKey("AIzaSyDE-HFlnjofWDZ2Er2dPwQmfvXi4vxBmmU");
             search.setQ(keywords);
             search.setType("video");
             search.setMaxResults(1l);

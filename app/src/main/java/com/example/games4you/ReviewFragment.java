@@ -107,24 +107,7 @@ public class ReviewFragment extends Fragment {
             }
         });
 
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("game", mGame);
-                    bundle.putString("console", mGame.getmConsole());
-                    GamePageFragment gamePageActivity = new GamePageFragment();
-                    gamePageActivity.setArguments(bundle);
-                    getFragmentManager().beginTransaction().replace(R.id.fragment_container, gamePageActivity).commit();
 
-                    return true;
-                }
-                return false;
-            }
-        });
 
         return view;
     }

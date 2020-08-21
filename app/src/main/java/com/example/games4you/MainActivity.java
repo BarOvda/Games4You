@@ -146,34 +146,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer((GravityCompat.START));
-        } else {
+        } else if (count == 0) {
             super.onBackPressed();
         }
+            else {
+                getSupportFragmentManager().popBackStack();
+            }
+
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_ps4:
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        psFragment,"PS4_FRAGMENT").commit();
+                        psFragment,"PS4_FRAGMENT").addToBackStack("ps4").commit();
                 break;
             case R.id.nav_xboxOne:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        xboxOneFragment,"XBOX_ONE_FRAGMENT").commit();
+                        xboxOneFragment,"XBOX_ONE_FRAGMENT").addToBackStack("xbox").commit();
                 break;
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        homeFragment).commit();
+                        homeFragment).addToBackStack("home").commit();
                 break;
             case R.id.nav_settings:
 //                ReviewFragment r = new ReviewFragment();
 //                r.setmGameConsoleType("ps4");
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        settingsFragment).commit();
+                        settingsFragment).addToBackStack("settings").commit();
                 break;
             case R.id.nav_log_out:
 

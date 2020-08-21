@@ -62,7 +62,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder
                 bundle.putString("console",mGames.get(position).getmConsole());
                 GamePageFragment gamePageActivity = new GamePageFragment();
                 gamePageActivity.setArguments(bundle);
-                manager.beginTransaction().replace(R.id.fragment_container,gamePageActivity).commit();
+                manager.beginTransaction().replace(R.id.fragment_container,gamePageActivity).addToBackStack("game_page").commit();
 
             }
         });

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -77,11 +78,13 @@ public class GamePageFragment extends Fragment {
     FirebaseFirestore db;
     private YoutubeSearchAPI youtubeSearchAPIForGamplay;
     private YoutubeSearchAPI youtubeSearchAPI;
+    private View view;
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_game_page, container, false);
+         view = inflater.inflate(R.layout.fragment_game_page, container, false);
 
         trailersList = new ArrayList<>();
 
@@ -165,12 +168,6 @@ public class GamePageFragment extends Fragment {
         youtubeSearchAPI.execute();
 
 
-
-
-
-
-
-
         mYouTubeGamePlayProcess = new IProcess() {
             @Override
             public void updateAdapter() {
@@ -231,7 +228,13 @@ public class GamePageFragment extends Fragment {
         });
 */
 
-
+    mWebViewGamePlay.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            view.setFocusableInTouchMode(true);
+            view.requestFocus();
+        }
+    });
 
         btnAddOffer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,7 +243,8 @@ public class GamePageFragment extends Fragment {
                 bundle.putSerializable("game", mGame);
                 UserOfferForGameFragment userOfferForGameFragment = new UserOfferForGameFragment();
                 userOfferForGameFragment.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container,userOfferForGameFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container,userOfferForGameFragment)
+                        .addToBackStack("add_offer").commit();
             }
         });
 
@@ -273,19 +277,6 @@ public class GamePageFragment extends Fragment {
                 });
 
 
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new HomeFragment()).commit();
-                    return true;
-                }
-                return false;
-            }
-        });
 
 
         //============= Review Recycle View ==========================
@@ -325,7 +316,8 @@ public class GamePageFragment extends Fragment {
                 ReviewFragment reviewFragment = new ReviewFragment();
                 reviewFragment.setArguments(bundle);
                 FragmentManager manager = getFragmentManager();
-                manager.beginTransaction().replace(R.id.fragment_container, reviewFragment).commit();
+                manager.beginTransaction().replace(R.id.fragment_container, reviewFragment)
+                        .addToBackStack("add_review").commit();
             }
         });
 

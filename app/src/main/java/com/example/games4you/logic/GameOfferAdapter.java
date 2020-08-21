@@ -65,7 +65,8 @@ public class GameOfferAdapter extends RecyclerView.Adapter<GameOfferAdapter.Game
                 bundle.putSerializable("game",gameCurrent);
                 UserOfferDisplayFragment fragment = new UserOfferDisplayFragment();
                 fragment.setArguments(bundle);
-                manager.beginTransaction().replace(R.id.fragment_container,fragment).commit();
+                manager.beginTransaction().replace(R.id.fragment_container,fragment)
+                        .addToBackStack("offer_page").commit();
             }
         });
     }
