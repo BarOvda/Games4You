@@ -5,6 +5,7 @@
 
     <item
         android:id="@+id/videos"
+
         android:icon="@drawable/ic_baseline_video_library_24"
         android:title="Home"
         app:showAsAction="always"/>
@@ -24,13 +25,13 @@
             android:icon="@drawable/ic_baseline_info_24"
             android:title="Home"
             app:showAsAction="always"/>
-
+        <item
+            android:id="@+id/console_icon"
+            android:icon="@drawable/ic_xbox_icon_png"
+            android:title="console_icon"
+            app:showAsAction="always"/>
     </group>
-    <item
-        android:id="@+id/console_icon"
-        android:icon="@drawable/ps4_icon"
-        android:title="offers"
-        app:showAsAction="always"/>
+
 
 
 </menu>

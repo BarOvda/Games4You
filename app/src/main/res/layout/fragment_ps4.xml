@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:layout_weight="10"
         android:theme="@style/Theme.Design.Light.NoActionBar"
         >
         <androidx.appcompat.widget.Toolbar
@@ -25,6 +24,7 @@
             android:background="@drawable/main_style"
             android:minHeight="100dp"
             android:layout_gravity="bottom"
+
             app:layout_scrollFlags="scroll|enterAlways"
             android:theme="?attr/actionBarTheme">
 
@@ -34,32 +34,35 @@
             android:orientation="horizontal"
 
             android:weightSum="100">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="25dp"
-                android:layout_weight="20"
-                android:layout_gravity="center_vertical"
-                android:id="@+id/search_button_toolbar"
-
-                android:src="@drawable/ic_search" />
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="50"
-
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/search_bar_main_logo"
-                android:src="@drawable/games4u_logo" />
-
             <ImageView
                 android:id="@+id/search_button_filter"
                 android:layout_width="0dp"
-                android:layout_height="25dp"
+                android:layout_height="40dp"
                 android:layout_weight="20"
-                android:layout_gravity="center_vertical"
-
+                android:layout_gravity="center_vertical|bottom"
+                android:paddingBottom="15dp"
                 android:src="@drawable/ic_search_filter" />
+
+            <ImageView
+                android:id="@+id/search_bar_main_logo"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:paddingLeft="10dp"
+                android:paddingTop="15dp"
+                android:src="@drawable/games4u_logo" />
+
+            <SearchView
+                android:id="@+id/search_button_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom"
+                android:layout_weight="10"
+
+                android:paddingBottom="15dp"
+                android:src="@drawable/ic_search"
+                app:actionViewClass="android.widget.SearchView" />
+
 
         </LinearLayout>
         </androidx.appcompat.widget.Toolbar>

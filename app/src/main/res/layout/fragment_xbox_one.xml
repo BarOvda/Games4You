@@ -34,18 +34,23 @@
 
                 android:weightSum="100">
 
-                <ImageView
-                    android:layout_width="0dp"
+
+
+                <SearchView
+                    android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_weight="20"
                     android:layout_gravity="center_vertical"
                     android:id="@+id/search_button_toolbar"
 
-                    android:src="@drawable/ic_search" />
+                    android:src="@drawable/ic_search"
+                    app:actionViewClass="android.widget.SearchView" />
+
+                android:src="@drawable/ic_search" />
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:layout_weight="50"
+                    android:layout_weight="40"
                     android:layout_gravity="center_horizontal"
                     android:id="@+id/search_bar_main_logo"
                     android:src="@drawable/games4u_logo" />
@@ -54,9 +59,9 @@
                     android:id="@+id/search_button_filter"
                     android:layout_width="0dp"
                     android:layout_height="25dp"
-                    android:layout_weight="20"
+                    android:layout_weight="40"
                     android:layout_gravity="center_vertical"
-
+                    android:paddingLeft="15dp"
                     android:src="@drawable/ic_search_filter" />
 
             </LinearLayout>

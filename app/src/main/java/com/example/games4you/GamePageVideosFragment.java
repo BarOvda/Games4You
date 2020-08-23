@@ -1,5 +1,7 @@
 package com.example.games4you;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -34,8 +36,6 @@ import java.util.List;
 
 public class GamePageVideosFragment extends Fragment {
     private Game mGame;
-    private LinearLayoutManager ebayLinearLayoutManager;
-    private GamePageFragment.IProcess mProcess;
     private RecyclerView GamePlayRecyclerView;
     private GamePageFragment.IProcess mYouTubeTrailerProcess;
     private GamePageFragment.IProcess mYouTubeGamePlayProcess;
@@ -43,11 +43,8 @@ public class GamePageVideosFragment extends Fragment {
     private List<YouTubeVideo> videos;
     private YoutubeSearchAPI youtubeSearchAPIForGamplay;
     private YoutubeSearchAPI youtubeSearchAPI;
-    private EbayListAdapter GamePlayListAdapter;
 
-/*
-    private LinearLayoutManager offersLinearLayoutManager;
-*/
+
 
     public GamePageVideosFragment(Game mGame) {
         this.mGame = mGame;
@@ -61,9 +58,7 @@ public class GamePageVideosFragment extends Fragment {
         GamePlayRecyclerView=view.findViewById(R.id.videos_recyclerview);
 
         mWebViewTrailer.setWebChromeClient(new ChromeClient());
-        //mWebViewGamePlay.setWebChromeClient(new ChromeClient());
         mWebViewTrailer.setBackgroundColor(Color.TRANSPARENT);
-        //mWebViewGamePlay.setBackgroundColor(Color.TRANSPARENT);
 
         final YouTubeAdapter adapter= new YouTubeAdapter(this.getContext(),videos,getFragmentManager());
         GamePlayRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
@@ -73,7 +68,6 @@ public class GamePageVideosFragment extends Fragment {
             public void updateAdapter() {
 
                 List<String> trailersIDs = youtubeSearchAPI.getVideoId();
-                Log.e("VideoId",trailersIDs.get(0));
                 String videoStrTrailer = "<html><body>Trailer<br><iframe width=\"300\" height=\"200\" src=\"https://www.youtube.com/embed/"+trailersIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
                 WebSettings ws = mWebViewTrailer.getSettings();
                 ws.setJavaScriptEnabled(true);
@@ -112,14 +106,14 @@ public class GamePageVideosFragment extends Fragment {
     }
 
 
-    private class ChromeClient extends WebChromeClient {
+    public class ChromeClient extends WebChromeClient {
         private View mCustomView;
         private WebChromeClient.CustomViewCallback mCustomViewCallback;
         protected FrameLayout mFullscreenContainer;
         private int mOriginalOrientation;
         private int mOriginalSystemUiVisibility;
 
-        ChromeClient() {}
+        public ChromeClient() {}
 
         public Bitmap getDefaultVideoPoster()
         {

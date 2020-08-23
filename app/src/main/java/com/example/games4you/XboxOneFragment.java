@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 
 import androidx.annotation.NonNull;
@@ -44,7 +45,7 @@ public class XboxOneFragment extends Fragment {
     private ProgressBar progressBar;
 
 
-    private ImageView searchView;
+    private SearchView searchView;
     private ImageView filterView;
     boolean[] checkedCategories;
     String[] listCategories;
@@ -112,7 +113,18 @@ public class XboxOneFragment extends Fragment {
                         }
                     }
                 });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchFilter(newText);
+                return true;
+            }
+        });
         return  view;
 
     }

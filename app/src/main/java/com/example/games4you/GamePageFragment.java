@@ -3,11 +3,15 @@ package com.example.games4you;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +19,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +40,7 @@ import com.google.api.services.youtube.model.SearchResult;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,8 +132,17 @@ public class GamePageFragment extends Fragment implements Toolbar.OnMenuItemClic
 
 
         if (savedInstanceState == null) {
+            Drawable xboxIcon = ContextCompat.getDrawable(getActivity().getApplicationContext(),R.drawable.ic_xbox_icon_png);
+            Drawable psIcon = ContextCompat.getDrawable(getActivity().getApplicationContext(),R.drawable.ps4_icon);
            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_game_page,
                     game_page_information_fragment).commit();
+
+            if(mGame.getmConsole().equals("ps4_games")){
+            gamePageToolBar.getMenu().getItem(4).setIcon(psIcon);}
+            else{
+                gamePageToolBar.getMenu().getItem(4).setIcon(xboxIcon);}
+
+            gamePageToolBar.getMenu().getItem(3).getIcon().setColorFilter(Color.rgb(255,51,51), PorterDuff.Mode.MULTIPLY);
         }
 
 
@@ -254,14 +271,22 @@ public class GamePageFragment extends Fragment implements Toolbar.OnMenuItemClic
 
         void updateAdapter();
     }
+/*
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        gamePageToolBar.getMenu().getItem(3).getIcon().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+    }*/
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        for(int i=0;i<gamePageToolBar.getMenu().size();i++){
-            gamePageToolBar.getMenu().getItem(i).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY );
+        if(!item.getTitle().equals("console_icon")) {
+            for (int i = 0; i < gamePageToolBar.getMenu().size(); i++) {
+                gamePageToolBar.getMenu().getItem(i).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
 
+            }
+            item.getIcon().setColorFilter(Color.rgb(255,51,51), PorterDuff.Mode.MULTIPLY);
         }
-        item.getIcon().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY );
         switch (item.getItemId()) {
 
             case R.id.videos:

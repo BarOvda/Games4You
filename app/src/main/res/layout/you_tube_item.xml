@@ -8,5 +8,6 @@
     <WebView
         android:id="@+id/web_view_youtube"
         android:layout_width="match_parent"
-        android:layout_height="225dp"/>
+        android:layout_height="225dp"
+        android:background="@drawable/toolbar_style"/>
 </androidx.cardview.widget.CardView>

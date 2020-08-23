@@ -15,31 +15,37 @@
 
         >
 
-        <LinearLayout
-            android:id="@+id/bmp_programme_ll"
+
+        <WebView
+            android:id="@+id/videoview_trailer"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/toolbar_style"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/main_style"
-            android:orientation="vertical"
-            android:paddingTop="25dp"
+            android:layout_marginTop="16dp"
+            android:text="Game Play"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/videoview_trailer" />
 
-            <WebView
-                android:background="@drawable/toolbar_style"
-                android:id="@+id/videoview_trailer"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/videos_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="28dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/videos_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="28dp"
+            android:layout_x="6dp"
+            android:layout_y="240dp"
+            android:background="@drawable/toolbar_style"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
