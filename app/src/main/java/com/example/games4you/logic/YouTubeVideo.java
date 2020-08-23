@@ -2,13 +2,14 @@ package com.example.games4you.logic;
 
 import android.webkit.WebView;
 
+import com.example.games4you.logic.YouTubeAPI.YoutubeSearchAPI;
+
 public class YouTubeVideo {
     private String url;
-    private WebView webView;
 
-    public YouTubeVideo(String url, WebView webView) {
+
+    public YouTubeVideo(String url) {
         this.url = url;
-        this.webView = webView;
     }
 
     public String getUrl() {
@@ -19,11 +20,5 @@ public class YouTubeVideo {
         this.url = url;
     }
 
-    public WebView getWebView() {
-        return webView;
-    }
 
-    public void setWebView(WebView webView) {
-        this.webView = webView;
-    }
 }

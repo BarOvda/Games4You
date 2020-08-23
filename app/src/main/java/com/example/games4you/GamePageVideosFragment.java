@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,8 +24,11 @@ import android.widget.TextView;
 
 import com.example.games4you.logic.Game;
 import com.example.games4you.logic.YouTubeAPI.YoutubeSearchAPI;
+import com.example.games4you.logic.YouTubeAdapter;
+import com.example.games4you.logic.YouTubeVideo;
 import com.example.games4you.logic.ebay_plugin.EbayListAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,15 +36,14 @@ public class GamePageVideosFragment extends Fragment {
     private Game mGame;
     private LinearLayoutManager ebayLinearLayoutManager;
     private GamePageFragment.IProcess mProcess;
-    private RecyclerView EbayTitleRecyclerView;
+    private RecyclerView GamePlayRecyclerView;
     private GamePageFragment.IProcess mYouTubeTrailerProcess;
     private GamePageFragment.IProcess mYouTubeGamePlayProcess;
     private WebView mWebViewTrailer;
-    private WebView mWebViewGamePlay;
-
+    private List<YouTubeVideo> videos;
     private YoutubeSearchAPI youtubeSearchAPIForGamplay;
     private YoutubeSearchAPI youtubeSearchAPI;
-    private EbayListAdapter EbayListAdapter;
+    private EbayListAdapter GamePlayListAdapter;
 
 /*
     private LinearLayoutManager offersLinearLayoutManager;
@@ -52,17 +55,19 @@ public class GamePageVideosFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_game_page_videos, container, false);
-
+        videos = new ArrayList<>();
 
        mWebViewTrailer=(WebView)view.findViewById(R.id.videoview_trailer);
-        mWebViewGamePlay=(WebView)view.findViewById(R.id.videoview_gameplay);
+        GamePlayRecyclerView=view.findViewById(R.id.videos_recyclerview);
 
         mWebViewTrailer.setWebChromeClient(new ChromeClient());
-        mWebViewGamePlay.setWebChromeClient(new ChromeClient());
+        //mWebViewGamePlay.setWebChromeClient(new ChromeClient());
         mWebViewTrailer.setBackgroundColor(Color.TRANSPARENT);
-        mWebViewGamePlay.setBackgroundColor(Color.TRANSPARENT);
+        //mWebViewGamePlay.setBackgroundColor(Color.TRANSPARENT);
 
-
+        final YouTubeAdapter adapter= new YouTubeAdapter(this.getContext(),videos,getFragmentManager());
+        GamePlayRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        GamePlayRecyclerView.setAdapter(adapter);
         mYouTubeTrailerProcess = new GamePageFragment.IProcess() {
             @Override
             public void updateAdapter() {
@@ -73,8 +78,6 @@ public class GamePageVideosFragment extends Fragment {
                 WebSettings ws = mWebViewTrailer.getSettings();
                 ws.setJavaScriptEnabled(true);
 
-
-
                 mWebViewTrailer.loadData(videoStrTrailer, "text/html", "utf-8");
                 mWebViewTrailer.setWebViewClient(new WebViewClient() {
                     @Override
@@ -82,42 +85,28 @@ public class GamePageVideosFragment extends Fragment {
                         return false;
                     }
                 });
-                mWebViewGamePlay.reload();
             }
         };
-        youtubeSearchAPI = new YoutubeSearchAPI(mGame.getName() + " trailer",mYouTubeTrailerProcess);
+        youtubeSearchAPI = new YoutubeSearchAPI(mGame.getName() + " trailer",mYouTubeTrailerProcess,1l);
         youtubeSearchAPI.execute();
 
 
         mYouTubeGamePlayProcess = new GamePageFragment.IProcess() {
             @Override
             public void updateAdapter() {
-
-                List<String> gameplayssIDs = youtubeSearchAPIForGamplay.getVideoId();
-
-                String videoStringGamePlay = "<html><body>Game Play<br><iframe width=\"300\" height=\"200\" src=\"https://www.youtube.com/embed/" + gameplayssIDs.get(0) + "\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
-
-                mWebViewGamePlay.setWebViewClient(new WebViewClient() {
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        return false;
-                    }
-                });
-                WebSettings ws1 = mWebViewGamePlay.getSettings();
-                ws1.setJavaScriptEnabled(true);
-                mWebViewGamePlay.loadData(videoStringGamePlay, "text/html", "utf-8");
-
+                List<String> gameplayssIDs= new ArrayList<>();
+                 gameplayssIDs.addAll(youtubeSearchAPIForGamplay.getVideoId());
+                for (String gamePlayUrl:gameplayssIDs
+                     ) {
+                    videos.add(new YouTubeVideo(gamePlayUrl));
+                }
+                adapter.notifyDataSetChanged();
             }
         };
 
-
-        youtubeSearchAPIForGamplay = new YoutubeSearchAPI(mGame.getName() + " gameplay",mYouTubeGamePlayProcess);
+        youtubeSearchAPIForGamplay = new YoutubeSearchAPI(mGame.getName() + " gameplay",mYouTubeGamePlayProcess,3l);
 
         youtubeSearchAPIForGamplay.execute();
-
-
-
-
 
         return view;
     }

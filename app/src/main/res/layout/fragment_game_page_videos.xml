@@ -31,12 +31,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp" />
 
-            <WebView
-                android:background="@drawable/toolbar_style"
-                android:id="@+id/videoview_gameplay"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/videos_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="28dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
 
 

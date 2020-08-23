@@ -1,11 +1,14 @@
 package com.example.games4you.logic;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,35 +48,28 @@ public class YouTubeAdapter extends RecyclerView.Adapter<YouTubeAdapter.YouTubeV
 
     @Override
     public void onBindViewHolder(@NonNull YouTubeViewHolder holder, int position) {
-        final GameOffer gameCurrent =mGames.get(position);
-        holder.textViewName.setText((gameCurrent.getmTitle()));
-        Picasso.get().load(gameCurrent.getmImageUrl())
-                .fit()
-                .centerCrop()
-                .into(holder.imageView);
-        holder.priceView.setText(gameCurrent.getmPrice() + "$");
+        final YouTubeVideo gameCurrent =videos.get(position);
+        holder.mWebView.setBackgroundColor(Color.TRANSPARENT);
+        String videoStringGamePlay = "<html><body>Game Play<br><iframe width=\"300\" height=\"200\" src=\"https://www.youtube.com/embed/"
+                + gameCurrent.getUrl() + "\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
 
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+        holder.mWebView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onClick(View v) {
-
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("game",gameCurrent);
-                UserOfferDisplayFragment fragment = new UserOfferDisplayFragment();
-                fragment.setArguments(bundle);
-                manager.beginTransaction().replace(R.id.fragment_container,fragment)
-                        .addToBackStack("offer_page").commit();
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
             }
         });
+        WebSettings ws1 = holder.mWebView.getSettings();
+        ws1.setJavaScriptEnabled(true);
+        holder.mWebView.loadData(videoStringGamePlay, "text/html", "utf-8");
+
+
+
     }
-
-
-
 
     @Override
     public int getItemCount() {
-        return  mGames.size();    }
+        return  videos.size();    }
 
     public class YouTubeViewHolder extends RecyclerView.ViewHolder {
         public WebView mWebView;

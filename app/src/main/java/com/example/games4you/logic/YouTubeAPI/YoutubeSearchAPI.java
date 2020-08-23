@@ -24,9 +24,11 @@ public class YoutubeSearchAPI extends AsyncTask<Void, Void, Void> {
     private boolean isReady;
     private String keywords;
     private GamePageFragment.IProcess mProcess;
-    public YoutubeSearchAPI(String keywords, GamePageFragment.IProcess mProcess) {
+    private long maxResults;
+    public YoutubeSearchAPI(String keywords, GamePageFragment.IProcess mProcess,long maxResults) {
         this.keywords = keywords;
         this.mProcess=mProcess;
+        this.maxResults = maxResults;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class YoutubeSearchAPI extends AsyncTask<Void, Void, Void> {
             search.setKey("AIzaSyDE-HFlnjofWDZ2Er2dPwQmfvXi4vxBmmU");
             search.setQ(keywords);
             search.setType("video");
-            search.setMaxResults(1l);
+            search.setMaxResults(maxResults);
 
 
             // Call the API and print results.
@@ -76,7 +78,12 @@ public class YoutubeSearchAPI extends AsyncTask<Void, Void, Void> {
 
     {
         List<String> ans = new ArrayList<>();
-        ans.add(searchResultList.iterator().next().getId().getVideoId());
+        for (SearchResult res:this.searchResultList
+             ) {
+            ans.add(res.getId().getVideoId());
+
+        }
+
         return ans;
     }
 
