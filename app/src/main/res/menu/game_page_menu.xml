@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <group android:checkableBehavior="single">
 
     <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_baseline_home_24"
+        android:id="@+id/videos"
+        android:icon="@drawable/ic_baseline_video_library_24"
         android:title="Home"
         app:showAsAction="always"/>
+
     <item
-        android:titleCondensed="mkasdmkas"
-        android:id="@+id/nav_ps4"
+        android:id="@+id/offers"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"
+        android:title="Home"
+        app:showAsAction="always"/>
+        <item
+            android:id="@+id/users_offers"
+            android:icon="@drawable/ic_baseline_whatshot_24"
+            android:title="users offers"
+            app:showAsAction="always"/>
+        <item
+            android:id="@+id/info"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:title="Home"
+            app:showAsAction="always"/>
+
+    </group>
+    <item
+        android:id="@+id/console_icon"
         android:icon="@drawable/ps4_icon"
         android:title="offers"
         app:showAsAction="always"/>
+
 
 </menu>

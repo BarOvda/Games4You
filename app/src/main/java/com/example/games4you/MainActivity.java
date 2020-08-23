@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView navUsername = (TextView) headerView.findViewById(R.id.navMenuUserNameDisplay);
         TextView navEmail = (TextView) headerView.findViewById(R.id.navMenuEmailDisplay);
 
+
+
+
         userImageView = (ImageView)headerView.findViewById(R.id.user_image_view);
         userNameFiled = (TextView)headerView.findViewById(R.id.navMenuUserNameDisplay);
 
@@ -125,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainToolBar = findViewById(R.id.main_toolbar);
 
         setSupportActionBar(mainToolBar);
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, mainToolBar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);

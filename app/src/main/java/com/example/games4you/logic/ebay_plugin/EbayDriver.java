@@ -40,7 +40,7 @@ public class EbayDriver extends AsyncTask<Void, Void, Void> {
     public static final String OPERATION_NAME = /*"findItemsByKeywords"*/"findItemsAdvanced";
     public static final String GLOBAL_ID = "EBAY-US";
     public final static int REQUEST_DELAY = 0;
-    public final static int MAX_RESULTS = 6;
+    public final static int MAX_RESULTS =10;
     private int maxResults;
     private String console;
     private GamePageFragment.IProcess mProcess;
