@@ -71,7 +71,9 @@
             android:layout_height="wrap_content"
             android:isIndicator="true"
             android:numStars="5"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:scaleY="0.7"
+            android:scaleX="0.7">
 
         </RatingBar>
 

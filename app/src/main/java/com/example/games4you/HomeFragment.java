@@ -89,8 +89,8 @@ public class HomeFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
-
                                 game.setmConsole("xbox_one_games");
+                                game.setmDescription((String)document.get("description"));
 
                                 mXboxOneGames.add(game);
 
@@ -112,10 +112,8 @@ public class HomeFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
-
-
-
                                 game.setmConsole("ps4_games");
+                                game.setmDescription((String)document.get("description"));
 
                                 mPs4Games.add(game);
 

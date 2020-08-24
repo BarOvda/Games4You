@@ -99,6 +99,7 @@ public class XboxOneFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                                 Game game = document.toObject(Game.class);
+                                game.setmDescription((String)document.get("description"));
                                 game.setmConsole("xbox_one_games");
                                 mGames.add(game);
 

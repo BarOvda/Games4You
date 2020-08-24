@@ -2,10 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/reviews"
+            android:icon="@drawable/ic_baseline_rate_review_24"
+            android:title="Home"
+            app:showAsAction="always" />
 
     <item
         android:id="@+id/videos"
-
         android:icon="@drawable/ic_baseline_video_library_24"
         android:title="Home"
         app:showAsAction="always"/>
