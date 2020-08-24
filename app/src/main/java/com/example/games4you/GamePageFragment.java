@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
@@ -48,29 +49,12 @@ import java.util.List;
 public class GamePageFragment extends Fragment implements Toolbar.OnMenuItemClickListener{
 
 
-    private IProcess mProcess;
-
-
-    private Button btnAddOffer;
-
     private ImageView scrolledImage;
-    private ImageView menuImage;
-    private ImageView videosIcon;
-    private ImageView infoIcon;
 
     private Game mGame;
-    private TextView name;
-    private ImageView pic;
-    private TextView addReview;
 
-    private EbayDriver driver;
-    private  LinearLayoutManager ebayLinearLayoutManager;
-    private  LinearLayoutManager reviewsLinearLayoutManager;
-    private RecyclerView reviewRecycle;
-    private ReviewAdapter reviewAdapter;
-    private List<Review> mReviews;
-    private YouTube youtube;
-    private List<SearchResult> trailersList;
+    private ImageView pic;
+
     FirebaseFirestore db;
 
     private View view;
@@ -88,20 +72,7 @@ public class GamePageFragment extends Fragment implements Toolbar.OnMenuItemClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          view = inflater.inflate(R.layout.fragment_game_page, container, false);
 
-        trailersList = new ArrayList<>();
-/*
-    //    getVideoTrailerFromYouTube();
 
-        //String trailerURL = trailersList.get(0).toString();
-        //Log.e("trailer",trailerURL);
-
-        btnAddOffer = view.findViewById(R.id.add_offer_button);
-
-
-        addReview = view.findViewById(R.id.add_review_button);
-        reviewRecycle = view.findViewById(R.id.review_recyclerview);
-
-*/
         pic = view.findViewById(R.id.game_image_menu);
         scrolledImage = view.findViewById(R.id.profile_avatar);
 

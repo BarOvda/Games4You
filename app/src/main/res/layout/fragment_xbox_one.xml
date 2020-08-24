@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/main_style"
-            android:minHeight="?attr/actionBarSize"
+            android:minHeight="100dp"
             app:layout_scrollFlags="scroll|enterAlways"
             android:theme="?attr/actionBarTheme">
 
@@ -38,30 +38,33 @@
 
                 <SearchView
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_weight="20"
-                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="22"
+                    android:layout_gravity="center_vertical|bottom"
                     android:id="@+id/search_button_toolbar"
-
+                    android:paddingBottom="3dp"
                     android:src="@drawable/ic_search"
                     app:actionViewClass="android.widget.SearchView" />
 
-                android:src="@drawable/ic_search" />
+
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:paddingBottom="7dp"
                     android:layout_weight="40"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal|bottom"
                     android:id="@+id/search_bar_main_logo"
+
                     android:src="@drawable/games4u_logo" />
 
                 <ImageView
                     android:id="@+id/search_button_filter"
-                    android:layout_width="0dp"
-                    android:layout_height="25dp"
-                    android:layout_weight="40"
-                    android:layout_gravity="center_vertical"
-                    android:paddingLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="35"
+                    android:layout_gravity="center_vertical|bottom"
+                    android:paddingBottom="15dp"
+
                     android:src="@drawable/ic_search_filter" />
 
             </LinearLayout>
@@ -70,10 +73,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_weight="90"
-
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
+        android:layout_weight="90"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
         />

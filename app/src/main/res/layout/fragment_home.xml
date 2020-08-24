@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
            android:text="Newest PS4 Games"
+           android:visibility="invisible"
            android:id="@+id/ps_text"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ps4_recycler_view"
@@ -31,6 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Newest XboxOne Games"
+            android:visibility="invisible"
+
             android:id="@+id/xbox_text"/>
 
         <androidx.recyclerview.widget.RecyclerView

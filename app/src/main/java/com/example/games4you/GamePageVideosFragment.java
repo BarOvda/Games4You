@@ -22,6 +22,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.games4you.logic.Game;
@@ -43,8 +44,8 @@ public class GamePageVideosFragment extends Fragment {
     private List<YouTubeVideo> videos;
     private YoutubeSearchAPI youtubeSearchAPIForGamplay;
     private YoutubeSearchAPI youtubeSearchAPI;
-
-
+    private TextView textView;
+    private ProgressBar progressBar;
 
     public GamePageVideosFragment(Game mGame) {
         this.mGame = mGame;
@@ -53,10 +54,10 @@ public class GamePageVideosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_game_page_videos, container, false);
         videos = new ArrayList<>();
-
+        textView = view.findViewById(R.id.textView);
        mWebViewTrailer=(WebView)view.findViewById(R.id.videoview_trailer);
         GamePlayRecyclerView=view.findViewById(R.id.videos_recyclerview);
-
+        progressBar = view.findViewById(R.id.progressBar4);
         mWebViewTrailer.setWebChromeClient(new ChromeClient());
         mWebViewTrailer.setBackgroundColor(Color.TRANSPARENT);
 
@@ -71,7 +72,8 @@ public class GamePageVideosFragment extends Fragment {
                 String videoStrTrailer = "<html><body>Trailer<br><iframe width=\"300\" height=\"200\" src=\"https://www.youtube.com/embed/"+trailersIDs.get(0)+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
                 WebSettings ws = mWebViewTrailer.getSettings();
                 ws.setJavaScriptEnabled(true);
-
+                textView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
                 mWebViewTrailer.loadData(videoStrTrailer, "text/html", "utf-8");
                 mWebViewTrailer.setWebViewClient(new WebViewClient() {
                     @Override

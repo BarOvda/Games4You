@@ -43,6 +43,8 @@ public class HomeFragment extends Fragment {
     FirebaseFirestore db;
     private List<Game> mPs4Games;
     private List<Game> mXboxOneGames;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,10 +97,6 @@ public class HomeFragment extends Fragment {
                             }
                             mGameAdapter = new GameAdapter(HomeFragment.this.getContext(),mXboxOneGames,getFragmentManager());
                             mXboxOneRecycleView.setAdapter(mGameAdapter);
-                        } else {
-                            psText.setVisibility(View.GONE);
-                            xboxText.setVisibility(View.GONE);
-                            homeProggresBar.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -124,8 +122,6 @@ public class HomeFragment extends Fragment {
                             }
                             mGameAdapter = new GameAdapter(HomeFragment.this.getContext(),mPs4Games,getFragmentManager());
                             mPs4RecycleView.setAdapter(mGameAdapter);
-                        } else {
-
                         }
                     }
                 });
@@ -135,9 +131,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void searchFilter(String txt) {
-        mGameAdapter.getFilter().filter(txt);
-    }
+
 }
 
 
