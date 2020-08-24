@@ -38,7 +38,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     public void onBindViewHolder(@NonNull ReviewViewHolder holder, int position) {
         Review review = mReviews.get(position);
         holder.title.setText(review.getReview_title());
-        holder.userName.setText(review.getUser_name());
         holder.ratingBar.setRating((float) review.getRating());
         holder.content.setText(review.getReview());
 
@@ -52,17 +51,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
         public CardView parentLayout;
         public TextView title;
-        public TextView userName;
         public RatingBar ratingBar;
         public TextView content;
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
             this.parentLayout = itemView.findViewById(R.id.review_parent_layout);
-            this.title = itemView.findViewById(R.id.review_title);;
-            this.userName = itemView.findViewById(R.id.review_user_name);;
-            this.ratingBar = itemView.findViewById(R.id.review_rating_bar);;
-            this.content = itemView.findViewById(R.id.review_content);;
+            this.title = itemView.findViewById(R.id.review_title);
+            this.ratingBar = itemView.findViewById(R.id.review_rating_bar);
+            this.content = itemView.findViewById(R.id.review_content);
         }
     }
 }

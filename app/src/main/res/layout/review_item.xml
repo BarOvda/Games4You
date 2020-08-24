@@ -42,29 +42,6 @@
             </TextView>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/review_user_name">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/review_user_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="start"
-                android:textSize="12sp">
-
-            </TextView>
-        </LinearLayout>
-
         <RatingBar
             android:id="@+id/review_rating_bar"
             android:layout_width="wrap_content"
