@@ -1,17 +1,29 @@
 package com.example.games4you;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
@@ -24,14 +36,18 @@ import com.example.games4you.logic.Game;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import io.netopen.hotbitmapgg.library.view.RingProgressBar;
+import io.opencensus.trace.export.SpanExporter;
+
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class GamePageFragment extends Fragment implements Toolbar.OnMenuItemClickListener{
-
+public class GamePageFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     private ImageView scrolledImage;
-
+    private ProgressBar gameRating;
     private Game mGame;
+    private TextView mTextRating;
+
 
     private ImageView pic;
 
@@ -51,23 +67,9 @@ public class GamePageFragment extends Fragment implements Toolbar.OnMenuItemClic
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-         view = inflater.inflate(R.layout.fragment_game_page, container, false);
-
-
-        pic = view.findViewById(R.id.game_image_menu);
-        scrolledImage = view.findViewById(R.id.profile_avatar);
-
-        gamePageToolBar = view.findViewById(R.id.htab_toolbar);
-
-        gamePageToolBar.getMenu().clear();
-        // Inflate the menu; this adds items to the action bar if it is present.
-        gamePageToolBar.inflateMenu(R.menu.game_page_menu);
-        gamePageToolBar.setOnMenuItemClickListener(this);
-
-
-        db= FirebaseFirestore.getInstance();
         //============ get game from other activity\fragment ================
         mGame = (Game) getArguments().getSerializable("game");
+
 
 
         //=========Fragments creation=================
@@ -75,7 +77,27 @@ public class GamePageFragment extends Fragment implements Toolbar.OnMenuItemClic
         gamePageVideosFragment = new GamePageVideosFragment(mGame);
         gamePageEbayFragment = new GamePageEbayFragment(mGame);
         gamePageUsersOffersDisplyFragment = new GamePageUsersOffersDisplyFragment(mGame);
+
         gamePageReviewDisplayFragment = new GamePageReviewDisplayFragment(mGame);
+
+        view = inflater.inflate(R.layout.fragment_game_page, container, false);
+        mTextRating = view.findViewById(R.id.myTextProgress);
+    gameRating = view.findViewById(R.id.progressBar);
+        pic = view.findViewById(R.id.game_image_menu);
+        scrolledImage = view.findViewById(R.id.profile_avatar);
+
+        gamePageToolBar = view.findViewById(R.id.htab_toolbar);
+
+
+        gamePageToolBar.getMenu().clear();
+        // Inflate the menu; this adds items to the action bar if it is present.
+        gamePageToolBar.inflateMenu(R.menu.game_page_menu);
+            gamePageToolBar.setOnMenuItemClickListener(this);
+
+
+
+
+        db= FirebaseFirestore.getInstance();
 
         //=====================================
         Log.e("GAME", "name: " + mGame.getName() + " des: " + mGame.getmDescription());

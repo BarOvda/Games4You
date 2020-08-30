@@ -141,7 +141,7 @@ public class UserOfferForGameFragment extends Fragment {
         Login loginActivity = new Login();
         GameOffer offer = new GameOffer(String.valueOf(title.getText()),String.valueOf(mImageUri)
                 ,String.valueOf(description.getText())
-                ,price,new GeoPoint(loginActivity.getCurrentUserLong(),loginActivity.getCurrentUserLat())
+                ,price,new GeoPoint(loginActivity.getCurrentUserLat(),loginActivity.getCurrentUserLong())
                 ,mGame.getmName(),currentUser.getEmail(),mGame.getmConsole());
         db.collection( mGame.getmConsole())
                 .document(mGame.getName())

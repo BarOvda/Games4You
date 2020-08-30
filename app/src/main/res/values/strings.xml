@@ -17,4 +17,6 @@
     <string name="add_review">Add Review</string>
     <string name="add_offer">Add offer</string>
     <string name="market_place">Market Place</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

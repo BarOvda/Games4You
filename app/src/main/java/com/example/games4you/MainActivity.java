@@ -172,9 +172,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         homeFragment).addToBackStack("home").commit();
                 break;
             case R.id.nav_settings:
-//                ReviewFragment r = new ReviewFragment();
-//                r.setmGameConsoleType("ps4");
-
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         settingsFragment).addToBackStack("settings").commit();
                 break;
@@ -193,27 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu,menu);
-/*
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView)searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-
-                if(psFragment!=null&&psFragment.isVisible())
-                    psFragment.searchFilter(newText);
-                else if(xboxOneFragment!=null&&xboxOneFragment.isVisible())
-                    xboxOneFragment.searchFilter(newText);
-
-                return false;
-            }
-        });*/
         return true;
     }
 

@@ -75,8 +75,8 @@ public class ReviewFragment extends Fragment {
                 Review review = new Review(mGameTitle, userEmail, rating,
                         mReview.getText().toString(), mReviewTitle.getText().toString(), userName);
                 setFragmentVisabilty();
-                if (mGameConsoleType.equals("ps4_games")) {
-                    db.collection("ps4_games")
+
+                    db.collection(mGameConsoleType)
                             .document(mGameTitle)
                             .collection("reviews")
                             .document(userEmail)
@@ -85,28 +85,16 @@ public class ReviewFragment extends Fragment {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     Toast.makeText(getContext(), "Your review was upload", Toast.LENGTH_SHORT).show();
-                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                            new HomeFragment(), "PS4_FRAGMENT").commit();
-                                }
-                            });
-                } else if (mGameConsoleType.equals("xbox")) {
-                    db.collection("xbox_one_games")
-                            .document(mGameTitle)
-                            .collection("reviews")
-                            .document(userEmail)
-                            .set(review)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(getContext(), "Your review was upload", Toast.LENGTH_SHORT).show();
-                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                            new HomeFragment(), "XBOX_ONE_FRAGMENT").commit();
+                                    if (mGameConsoleType.equals("ps4_games"))
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                                new HomeFragment(), "PS4_FRAGMENT").commit();
+                                    else
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                                new HomeFragment(), "XBOX_ONE_FRAGMENT").commit();
                                 }
                             });
                 }
-            }
         });
-
 
 
         return view;

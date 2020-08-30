@@ -199,17 +199,6 @@ public class UserOfferDisplayFragment extends Fragment implements OnMapReadyCall
     public void onMapReady(GoogleMap map) {
         URL sellerUrl = null;
         Bitmap sellerBmp = null;
- /*  //     while (mGame.getmImageUrl()!=null);
-        try {
-             sellerUrl = new URL(userDetailes.getImageUrl());
-             sellerBmp = BitmapFactory.decodeStream(sellerUrl.openConnection().getInputStream());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-*/
 
         Login logFragment = new Login();
         LatLng myLocation = new LatLng(logFragment.getCurrentUserLat(),logFragment.getCurrentUserLong());
@@ -218,7 +207,7 @@ public class UserOfferDisplayFragment extends Fragment implements OnMapReadyCall
                 .title("Me"));
         LatLng sellerLocation = new LatLng(mGame.getLocation().getLatitude(),mGame.getLocation().getLongitude());
         Marker sellerMarker = map.addMarker(new MarkerOptions()
-                .position(myLocation)
+                .position(sellerLocation)
                /* .icon((BitmapDescriptorFactory.fromBitmap(sellerBmp))))*/
                 .title(mGame.getUserEmail()));
 
