@@ -87,7 +87,7 @@ public class GamePageReviewDisplayFragment extends Fragment {
                             df.setMaximumFractionDigits(2);
 
                             mTextRating.setText(df.format(getTotalRating())+"");
-                            ObjectAnimator animation = ObjectAnimator.ofInt(gameRating, "progress", 0, (int)totalRating*100); // see this max value coming back here, we animate towards that value
+                            ObjectAnimator animation = ObjectAnimator.ofInt(gameRating, "progress", 0, (int)(totalRating*100));
 
                             animation.setInterpolator(new DecelerateInterpolator());
                             animation.addListener(new Animator.AnimatorListener() {

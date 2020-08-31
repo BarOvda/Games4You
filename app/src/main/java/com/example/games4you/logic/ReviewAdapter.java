@@ -47,7 +47,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         holder.title.setText(review.getReview_title());
 
         holder.ratingText.setText(review.getRating()+"");
-        ObjectAnimator animation = ObjectAnimator.ofInt(holder.ratingBar, "progress", 0, (int)review.getRating()*100); // see this max value coming back here, we animate towards that value
+        ObjectAnimator animation = ObjectAnimator.ofInt(holder.ratingBar, "progress", 0, (int)(review.getRating()*100));
 
         animation.setInterpolator(new DecelerateInterpolator());
         animation.addListener(new Animator.AnimatorListener() {

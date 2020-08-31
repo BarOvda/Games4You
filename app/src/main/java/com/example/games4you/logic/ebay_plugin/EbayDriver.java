@@ -77,7 +77,6 @@ public class EbayDriver extends AsyncTask<Void, Void, Void> {
     }
     @Override
     protected void onPostExecute(Void aVoid) {
-        //Do All UI Changes HERE
         super.onPostExecute(aVoid);
         mProcess.updateAdapter();
 
@@ -96,7 +95,10 @@ public class EbayDriver extends AsyncTask<Void, Void, Void> {
     }
 
     private String createAddress(String tag) {
-        tag = tag+" "+this.console;
+        if(this.console.equals("ps4_games"))
+            tag = tag+" playstation 4";
+        else
+            tag = tag+" xbox one";
         //substitute token
         String address = EbayDriver.EBAY_FINDING_SERVICE_URI;
         address = address.replace("{version}", EbayDriver.SERVICE_VERSION);
