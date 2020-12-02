@@ -1,5 +1,6 @@
 # Games4You
 Share, buy and search for new video games
+Android application developed with Firebase
 
 ### Screen shots
 |   |   |
