@@ -1,7 +1,8 @@
 # Games4You
-Share, buy and search for new video games./n
-APIs: Ebay, YouTube, Google Maps
+Share, buy and search for new video games
 
+## APIs
+Ebay, YouTube, Google Maps
 ### Screen shots
 |   |   |
 |:-:|:-:|
