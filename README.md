@@ -2,7 +2,7 @@
 Share, buy and search for new video games
 
 ## APIs
-Ebay, YouTube, Google Maps
+Ebay, YouTube and Google Maps
 ## Screen shots
 |   |   |
 |:-:|:-:|
